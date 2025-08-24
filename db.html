@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>七夕节的心意</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- 配置Tailwind自定义颜色和字体 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8A5CF7', // 主色调：浪漫紫
+                        secondary: '#F97316', // 辅助色：温暖橙
+                        accent: '#EC4899', // 强调色：粉色
+                        night: '#0F172A', // 夜空色
+                        star: '#FDE68A', // 星星色
+                    },
+                    fontFamily: {
+                        romantic: ['"Noto Serif SC"', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- 自定义工具类 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            .text-shadow-lg {
+                text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            }
+            .animate-float {
+                animation: float 6s ease-in-out infinite;
+            }
+            .animate-float-slow {
+                animation: float 8s ease-in-out infinite;
+            }
+            .animate-twinkle {
+                animation: twinkle 3s ease-in-out infinite;
+            }
+            .animate-swim {
+                animation: swim 20s linear infinite;
+            }
+            .animate-graze {
+                animation: graze 15s ease-in-out infinite;
+            }
+            .animate-zoom {
+                animation: zoom 0.5s ease forwards;
+            }
+            .animate-pulse-slow {
+                animation: pulse 2s ease-in-out infinite;
+            }
+            .photo-shadow {
+                box-shadow: 0 8px 24px rgba(138, 92, 247, 0.25);
+            }
+        }
+
+        /* 动画定义 */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes float-slow {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        @keyframes swim {
+            0% { transform: translateX(-100px) rotateY(0deg); }
+            49% { transform: translateX(calc(100vw + 100px)) rotateY(0deg); }
+            50% { transform: translateX(calc(100vw + 100px)) rotateY(180deg); }
+            99% { transform: translateX(-100px) rotateY(180deg); }
+            100% { transform: translateX(-100px) rotateY(0deg); }
+        }
+
+        @keyframes graze {
+            0% { transform: translateX(20vw) translateY(0) rotate(0deg); }
+            25% { transform: translateX(40vw) translateY(-10px) rotate(-5deg); }
+            50% { transform: translateX(60vw) translateY(0) rotate(0deg); }
+            75% { transform: translateX(40vw) translateY(10px) rotate(5deg); }
+            100% { transform: translateX(20vw) translateY(0) rotate(0deg); }
+        }
+
+        @keyframes zoom {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* 照片与音乐控制样式 */
+        .memory-item {
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+        .memory-photo {
+            transition: all 0.4s ease;
+            transform-origin: center;
+        }
+        .memory-item:hover .memory-photo {
+            transform: scale(1.05);
+        }
+        .memory-item:hover {
+            box-shadow: 0 12px 32px rgba(236, 72, 153, 0.35);
+        }
+        .memory-caption {
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0) 100%);
+        }
+        .memory-item:hover .memory-caption {
+            opacity: 1;
+        }
+        /* 播放状态样式 */
+        .memory-item.playing {
+            box-shadow: 0 0 30px rgba(249, 115, 22, 0.6);
+            border: 2px solid #F97316;
+        }
+        .memory-item.playing .play-icon {
+            display: none;
+        }
+        .memory-item.playing .pause-icon {
+            display: block;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        .play-icon, .pause-icon {
+            transition: all 0.3s ease;
+        }
+        .pause-icon {
+            display: none;
+        }
+        /* 音乐进度条样式 */
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background-color: #F97316;
+            width: 0%;
+            transition: width 0.1s linear;
+            z-index: 10;
+        }
+    </style>
+
+    <!-- 引入字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-night text-white overflow-x-hidden min-h-screen font-romantic">
+    <!-- 星空背景 -->
+    <div class="fixed inset-0 z-0">
+        <!-- 星星 -->
+        <div id="stars" class="absolute inset-0"></div>
+
+        <!-- 银河 -->
+        <div class="absolute top-1/4 left-0 w-full h-1/2 bg-primary/10 blur-3xl rounded-full transform -rotate-12"></div>
+    </div>
+
+    <!-- 主要内容 -->
+    <div class="relative z-10 container mx-auto px-4 py-16 md:py-24">
+        <!-- 标题部分 -->
+        <header class="text-center mb-16 md:mb-24">
+            <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold text-white text-shadow-lg mb-4 animate-float">七夕·心意</h1>
+            <p class="text-[clamp(1rem,2vw,1.25rem)] text-purple-200 max-w-2xl mx-auto">
+                遇见你，是银河赠我的糖
+            </p>
+        </header>
+
+        <!-- 鹊桥元素 -->
+        <div class="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-pink-300/30 to-transparent transform -translate-y-1/2 z-0"></div>
+
+        <!-- 内容区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
+            <!-- 左侧：文字信息 -->
+            <div class="space-y-8 z-10">
+                <div class="bg-night/60 backdrop-blur-md p-6 md:p-8 rounded-xl border border-primary/30 shadow-xl transform transition-all duration-500 hover:scale-[1.02]">
+                    <h2 class="text-[clamp(1.5rem,3vw,2rem)] text-accent mb-4 text-shadow">致我心中的小鹿</h2>
+                    <p class="text-purple-100 leading-relaxed mb-4">
+                        你像林间跳跃的小鹿，带着阳光的气息闯入我的生命。你的活泼可爱，是清晨最动人的露珠；你的天真浪漫，是夜空最明亮的星辰；你的自由自在，是我心中最向往的模样。
+                    </p>
+                    <p class="text-purple-100 leading-relaxed">
+                        每次听到你唱歌，世界都变得安静；每次看到你笑，我的世界就开满了花。你的存在，让平凡的日子都变得闪闪发光。
+                    </p>
+                </div>
+
+                <div class="bg-night/60 backdrop-blur-md p-6 md:p-8 rounded-xl border border-primary/30 shadow-xl transform transition-all duration-500 hover:scale-[1.02]">
+                    <h2 class="text-[clamp(1.5rem,3vw,2rem)] text-secondary mb-4 text-shadow">关于这条小鱼儿</h2>
+                    <p class="text-blue-100 leading-relaxed mb-4">
+                        我愿做一条向着大海游去的鱼，不断探索更广阔的世界，只为能带给你更美的风景。你的目光，是指引我前行的灯塔；你的歌声，是我乘风破浪时最温暖的陪伴。
+                    </p>
+                    <p class="text-blue-100 leading-relaxed">
+                        无论我游向何方，心中总有一片水域，永远为你停留；耳边总有你的歌声，永远为我回响。
+                    </p>
+                </div>
+
+                <div class="text-center pt-4">
+                    <p class="text-[clamp(1.2rem,2.5vw,1.75rem)] text-star text-shadow animate-twinkle">
+                        七夕快乐，我最亲爱的
+                    </p>
+                </div>
+            </div>
+
+            <!-- 右侧：图像和动画 -->
+            <div class="relative h-[500px] md:h-[600px]">
+                <!-- 梅花鹿 -->
+                <div class="absolute top-1/4 animate-graze z-20">
+                    <img src="https://picsum.photos/id/237/300/200" alt="一只可爱的梅花鹿" class="w-48 md:w-64 object-contain rounded-lg shadow-xl transform transition-all hover:scale-110" />
+                </div>
+
+                <!-- 河流/水域 -->
+                <div class="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-blue-900/60 to-blue-900/20 rounded-t-3xl backdrop-blur-sm border-t border-blue-500/30"></div>
+
+                <!-- 小鱼儿 -->
+                <div class="absolute bottom-1/4 animate-swim z-30">
+                    <img src="https://picsum.photos/id/1024/100/80" alt="一条游动的小鱼" class="w-16 h-12 object-contain rounded-full" />
+                </div>
+
+                <!-- 装饰元素：云朵 -->
+                <div class="absolute top-10 right-10 w-24 h-16 bg-white/10 backdrop-blur-md rounded-full animate-float-slow"></div>
+                <div class="absolute bottom-20 left-10 w-32 h-18 bg-white/10 backdrop-blur-md rounded-full animate-float"></div>
+            </div>
+        </div>
+
+        <!-- 回忆+音乐播放版块 -->
+        <section class="mb-20 z-10 relative" id="memories-music">
+            <div class="text-center mb-12">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-white text-shadow-lg mb-4 animate-float-slow">
+                    我们的回忆 & 你的歌声 <i class="fa fa-music text-accent"></i>
+                </h2>
+                <p class="text-[clamp(1rem,2vw,1.25rem)] text-purple-200 max-w-2xl mx-auto mb-6">
+                    每一张照片都是时光的印记，每一首歌都是你给我的礼物<br>
+                    <span class="text-secondary font-medium">点击照片即可播放/暂停对应歌曲</span>
+                </p>
+                <!-- 当前播放状态提示 -->
+                <div id="now-playing" class="bg-night/60 backdrop-blur-md px-6 py-3 rounded-full inline-block border border-secondary/40 text-sm md:text-base">
+                    <i class="fa fa-headphones text-secondary mr-2"></i>
+                    <span>点击照片，开启属于我们的音乐时光</span>
+                </div>
+            </div>
+
+            <!-- 照片+音乐画廊 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                <!-- 回忆项1：对应歌曲1 -->
+                <div class="memory-item relative overflow-hidden rounded-xl aspect-square photo-shadow animate-zoom" style="animation-delay: 0.1s" data-audio-id="audio1">
+                    <!-- 音乐进度条 -->
+                    <div class="progress-bar" id="progress1"></div>
+                    <!-- 播放/暂停图标 -->
+                    <div class="absolute top-4 right-4 bg-night/70 backdrop-blur-md w-12 h-12 rounded-full flex items-center justify-center z-20">
+                        <i class="fa fa-play text-secondary text-xl play-icon"></i>
+                        <i class="fa fa-pause text-secondary text-xl pause-icon"></i>
+                    </div>
+                    <!-- 照片 -->
+                    <img src="https://picsum.photos/id/1003/600/600" alt="第一次一起看海" class="memory-photo w-full h-full object-cover" />
+                    <!-- 文字说明 -->
+                    <div class="memory-caption absolute bottom-0 left-0 right-0 p-4 md:p-6 text-center z-10">
+                        <p class="text-white font-bold text-shadow">第一次一起看海</p>
+                        <p class="text-purple-100 text-sm md:text-base mb-2">海风和你的笑容，都刻在我心里</p>
+                        <p class="text-secondary text-xs md:text-sm"><i class="fa fa-music mr-1"></i> 你唱的《小幸运》</p>
+                    </div>
+                    <!-- 音频元素（隐藏） -->
+                    <audio id="audio1" src="https://example.com/song1.mp3" preload="metadata">
+                        您的浏览器不支持音频播放
+                    </audio>
+                </div>
+
+                <!-- 回忆项2：对应歌曲2 -->
+                <div class="memory-item relative overflow-hidden rounded-xl aspect-square photo-shadow animate-zoom" style="animation-delay: 0.2s" data-audio-id="audio2">
+                    <div class="progress-bar" id="progress2"></div>
+                    <div class="absolute top-4 right-4 bg-night/70 backdrop-blur-md w-12 h-12 rounded-full flex items-center justify-center z-20">
+                        <i class="fa fa-play text-secondary text-xl play-icon"></i>
+                        <i class="fa fa-pause text-secondary text-xl pause-icon"></i>
+                    </div>
+                    <img src="https://picsum.photos/id/1015/600/600" alt="一起逛过的公园" class="memory-photo w-full h-full object-cover" />
+                    <div class="memory-caption absolute bottom-0 left-0 right-0 p-4 md:p-6 text-center z-10">
+                        <p class="text-white font-bold text-shadow">一起逛过的公园</p>
+                        <p class="text-purple-100 text-sm md:text-base mb-2">你追着蝴蝶跑的样子，像小鹿一样可爱</p>
+                        <p class="text-secondary text-xs md:text-sm"><i class="fa fa-music mr-1"></i> 你唱的《有点甜》</p>
+                    </div>
+                    <audio id="audio2" src="https://example.com/song2.mp3" preload="metadata">
+                        您的浏览器不支持音频播放
+                    </audio>
+                </div>
+
+                <!-- 回忆项3：对应歌曲3 -->
+                <div class="memory-item relative overflow-hidden rounded-xl aspect-square photo-shadow animate-zoom" style="animation-delay: 0.3s" data-audio-id="audio3">
+                    <div class="progress-bar" id="progress3"></div>
+                    <div class="absolute top-4 right-4 bg-night/70 backdrop-blur-md w-12 h-12 rounded-full flex items-center justify-center z-20">
+                        <i class="fa fa-play text-secondary text-xl play-icon"></i>
+                        <i class="fa fa-pause text-secondary text-xl pause-icon"></i>
+                    </div>
+                    <img src="https://picsum.photos/id/1019/600/600" alt="雨夜的咖啡店" class="memory-photo w-full h-full object-cover" />
+                    <div class="memory-caption absolute bottom-0 left-0 right-0 p-4 md:p-6 text-center z-10">
+                        <p class="text-white font-bold text-shadow">雨夜的咖啡店</p>
+                        <p class="text-purple-100 text-sm md:text-base mb-2">共享一杯热可可，温暖了整个雨季</p>
+                        <p class="text-secondary text-xs md:text-sm"><i class="fa fa-music mr-1"></i> 你唱的《下雨天》</p>
+                    </div>
+                    <audio id="audio3" src="https://example.com/song3.mp3" preload="metadata">
+                        您的浏览器不支持音频播放
+                    </audio>
+                </div>
+
+                <!-- 回忆项4：对应歌曲4 -->
+                <div class="memory-item relative overflow-hidden rounded-xl aspect-square photo-shadow animate-zoom" style="animation-delay: 0.4s" data-audio-id="audio4">
+                    <div class="progress-bar" id="progress4"></div>
+                    <div class="absolute top-4 right-4 bg-night/70 backdrop-blur-md w-12 h-12 rounded-full flex items-center justify-center z-20">
+                        <i class="fa fa-play text-secondary text-xl play-icon"></i>
+                        <i class="fa fa-pause text-secondary text-xl pause-icon"></i>
+                    </div>
+                    <img src="https://picsum.photos/id/1022/600/600" alt="一起看的日落" class="memory-photo w-full h-full object-cover" />
+                    <div class="memory-caption absolute bottom-0 left-0 right-0 p-4 md:p-6 text-center z-10">
+                        <p class="text-white font-bold text-shadow">一起看的日落</p>
+                        <p class="text-purple-100 text-sm md:text-base mb-2">晚霞把天空染成粉色，像你的脸颊</p>
+                        <p class="text-secondary text-xs md:text-sm"><i class="fa fa-music mr-1"></i> 你唱的《日落大道》</p>
+                    </div>
+                    <audio id="audio4" src="https://example.com/song4.mp3" preload="metadata">
+                        您的浏览器不支持音频播放
+                    </audio>
+                </div>
+
+                <!-- 回忆项5：对应歌曲5 -->
+                <div class="memory-item relative overflow-hidden rounded-xl aspect-square photo-shadow animate-zoom" style="animation-delay: 0.5s" data-audio-id="audio5">
+                    <div class="progress-bar" id="progress5"></div>
+                    <div class="absolute top-4 right-4 bg-night/70 backdrop-blur-md w-12 h-12 rounded-full flex items-center justify-center z-20">
+                        <i class="fa fa-play text-secondary text-xl play-icon"></i>
+                        <i class="fa fa-pause text-secondary text-xl pause-icon"></i>
+                    </div>
+                    <img src="https://picsum.photos/id/1036/600/600" alt="第一次送你的花" class="memory-photo w-full h-full object-cover" />
+                    <div class="memory-caption absolute bottom-0 left-0 right-0 p-4 md:p-6 text-center z-10">
+                        <p class="text-white font-bold text-shadow">第一次送你的花</p>
+                        <p class="text-purple-100 text-sm md:text-base mb-2">你抱着花束的样子，比花还美</p>
+                        <p class="text-secondary text-xs md:text-sm"><i class="fa fa-music mr-1"></i> 你唱的《专属天使》</p>
+                    </div>
+                    <audio id="audio5" src="https://example.com/song5.mp3" preload="metadata">
+                        您的浏览器不支持音频播放
+                    </audio>
+                </div>
+
+                <!-- 回忆项6：对应歌曲6 -->
+                <div class="memory-item relative overflow-hidden rounded-xl aspect-square photo-shadow animate-zoom" style="animation-delay: 0.6s" data-audio-id="audio6">
+                    <div class="progress-bar" id="progress6"></div>
+                    <div class="absolute top-4 right-4 bg-night/70 backdrop-blur-md w-12 h-12 rounded-full flex items-center justify-center z-20">
+                        <i class="fa fa-play text-secondary text-xl play-icon"></i>
+                        <i class="fa fa-pause text-secondary text-xl pause-icon"></i>
+                    </div>
+                    <img src="https://picsum.photos/id/1043/600/600" alt="未来的约定" class="memory-photo w-full h-full object-cover" />
+                    <div class="memory-caption absolute bottom-0 left-0 right-0 p-4 md:p-6 text-center z-10">
+                        <p class="text-white font-bold text-shadow">未来的约定</p>
+                        <p class="text-purple-100 text-sm md:text-base mb-2">还有更多风景，想和你一起去看</p>
+                        <p class="text-secondary text-xs md:text-sm"><i class="fa fa-music mr-1"></i> 你唱的《陪你度过漫长岁月》</p>
+                    </div>
+                    <audio id="audio6" src="https://example.com/song6.mp3" preload="metadata">
+                        您的浏览器不支持音频播放
+                    </audio>
+                </div>
+            </div>
+
+            <!-- 装饰元素：漂浮的心形与音符 -->
+            <div class="absolute -top-10 left-1/4 text-accent/20 text-6xl animate-float">
+                <i class="fa fa-heart"></i>
+            </div>
+            <div class="absolute -bottom-10 right-1/4 text-primary/20 text-7xl animate-float-slow">
+                <i class="fa fa-music"></i>
+            </div>
+        </section>
+
+        <!-- 底部：爱情誓言 -->
+        <div class="text-center max-w-3xl mx-auto bg-night/70 backdrop-blur-md p-8 rounded-2xl border border-accent/30 shadow-2xl">
+            <h2 class="text-[clamp(1.3rem,2.5vw,1.8rem)] text-white mb-6 text-shadow">我们的约定</h2>
+            <p class="text-pink-100 leading-relaxed mb-6">
+                愿我们像星辰与大海，相互辉映，彼此成就。
+                我会守护你的天真烂漫，你会见证我的乘风破浪。
+                你的歌声会永远伴我同行，我们的故事也会永远继续。
+                不止七夕，更在朝朝夕夕。
+            </p>
+            <div class="flex justify-center space-x-4 text-star text-2xl animate-twinkle">
+                <i class="fa fa-heart"></i>
+                <i class="fa fa-music"></i>
+                <i class="fa fa-star"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="relative z-10 text-center py-6 text-purple-300/70 text-sm">
+        <p>七夕节 · 献给我最爱的人</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 创建随机星星
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 150;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+
+                // 随机位置
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+
+                // 随机大小
+                const size = Math.random() * 3 + 1;
+
+                // 随机闪烁动画延迟
+                const delay = Math.random() * 5;
+
+                // 随机不透明度
+                const opacity = Math.random() * 0.8 + 0.2;
+
+                star.style.cssText = `
+                    position: absolute;
+                    left: ${x}vw;
+                    top: ${y}vh;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background-color: #FDE68A;
+                    border-radius: 50%;
+                    opacity: ${opacity};
+                    animation: twinkle 3s ease-in-out ${delay}s infinite;
+                `;
+
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // 页面加载完成后创建星星
+        window.addEventListener('load', createStars);
+
+        // 平滑滚动效果
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // 音乐播放核心功能
+        document.addEventListener('DOMContentLoaded', () => {
+            // 获取所有回忆项和播放状态提示
+            const memoryItems = document.querySelectorAll('.memory-item');
+            const nowPlaying = document.getElementById('now-playing');
+            let currentAudio = null; // 记录当前播放的音频
+
+            // 为每个回忆项添加点击事件
+            memoryItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    // 获取当前项对应的音频ID和音频元素
+                    const audioId = item.getAttribute('data-audio-id');
+                    const audio = document.getElementById(audioId);
+                    const progressBar = document.getElementById(`progress${audioId.replace('audio', '')}`);
+
+                    // 情况1：点击的是当前正在播放的音频（暂停）
+                    if (currentAudio === audio && !audio.paused) {
+                        audio.pause();
+                        item.classList.remove('playing');
+                        updateNowPlaying(`已暂停：${getSongName(item)}`);
+
+                    // 情况2：点击的是新的音频（播放新音频，暂停旧音频）
+                    } else {
+                        // 暂停之前播放的音频
+                        if (currentAudio) {
+                            currentAudio.pause();
+                            document.querySelector(`[data-audio-id="${currentAudio.id}"]`).classList.remove('playing');
+                        }
+
+                        // 播放当前音频
+                        currentAudio = audio;
+                        audio.play();
+                        item.classList.add('playing');
+                        updateNowPlaying(`正在播放：${getSongName(item)}`);
+
+                        // 监听音频进度，更新进度条
+                        audio.addEventListener('timeupdate', () => {
+                            const progress = (audio.currentTime / audio.duration) * 100;
+                            progressBar.style.width = `${progress}%`;
+
+                            // 音频播放结束时重置状态
+                            if (audio.ended) {
+                                item.classList.remove('playing');
+                                progressBar.style.width = '0%';
+                                updateNowPlaying(`播放完成：${getSongName(item)}`);
+                                currentAudio = null;
+                            }
+                        });
+                    }
+                });
+            });
+
+            // 辅助函数：获取歌曲名称（从回忆项的文字中提取）
+            function getSongName(item) {
+                const songElem = item.querySelector('.memory-caption .text-secondary');
+                return songElem ? songElem.textContent.replace('你唱的《', '').replace('》', '') : '你的歌声';
+            }
+
+            // 辅助函数：更新播放状态提示文字
+            function updateNowPlaying(text) {
+                nowPlaying.innerHTML = `<i class="fa fa-headphones text-secondary mr-2"></i><span>${text}</span>`;
+            }
+
+            // 照片加载动画（确保图片加载完成后再显示）
+            const photos = document.querySelectorAll('.memory-photo');
+            photos.forEach(photo => {
+                photo.onload = function() {
+                    photo.parentElement.classList.add('opacity-100');
+                    photo.parentElement.classList.remove('opacity-0');
+                }
+                // 处理缓存图片
+                if (photo.complete) {
+                    photo.parentElement.classList.add('opacity-100');
+                    photo.parentElement.classList.remove('opacity-0');
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>七夕情人节 | 爱的告白</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            .bg-blur {
+                backdrop-filter: blur(8px);
+            }
+            .animate-float {
+                animation: float 6s ease-in-out infinite;
+            }
+            .animate-pulse-slow {
+                animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            }
+            @keyframes float {
+                0%, 100% {
+                    transform: translateY(0);
+                }
+                50% {
+                    transform: translateY(-20px);
+                }
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-pink-50 to-red-50 min-h-screen font-['Noto_Serif_SC'] overflow-x-hidden">
+    <!-- 导航栏 -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white/70 bg-blur">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="text-2xl font-['Ma_Shan_Zheng'] text-red-600">鹊桥相会</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="text-gray-800 hover:text-red-600 transition-colors duration-300">首页</a>
+                <a href="#legend" class="text-gray-800 hover:text-red-600 transition-colors duration-300">七夕传说</a>
+                <a href="#message" class="text-gray-800 hover:text-red-600 transition-colors duration-300">爱的告白</a>
+                <a href="#countdown" class="text-gray-800 hover:text-red-600 transition-colors duration-300">爱情计时</a>
+                <a href="#gifts" class="text-gray-800 hover:text-red-600 transition-colors duration-300">礼物推荐</a>
+            </div>
+            <button class="md:hidden text-gray-800" id="menu-toggle">
+                <i class="fa fa-bars text-2xl"></i>
+            </button>
+        </div>
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="md:hidden hidden bg-white/90 bg-blur py-4">
+            <div class="container mx-auto px-4 flex flex-col space-y-4">
+                <a href="#home" class="text-gray-800 hover:text-red-600 transition-colors duration-300 py-2">首页</a>
+                <a href="#legend" class="text-gray-800 hover:text-red-600 transition-colors duration-300 py-2">七夕传说</a>
+                <a href="#message" class="text-gray-800 hover:text-red-600 transition-colors duration-300 py-2">爱的告白</a>
+                <a href="#countdown" class="text-gray-800 hover:text-red-600 transition-colors duration-300 py-2">爱情计时</a>
+                <a href="#gifts" class="text-gray-800 hover:text-red-600 transition-colors duration-300 py-2">礼物推荐</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 首页/封面 -->
+    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- 背景图片 -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://picsum.photos/id/152/1920/1080" alt="浪漫背景" class="w-full h-full object-cover opacity-70">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-red-900/60"></div>
+        </div>
+
+        <!-- 漂浮的爱心 -->
+        <div class="absolute inset-0 z-10 overflow-hidden">
+            <div class="absolute top-[10%] left-[15%] text-red-500 animate-float" style="animation-delay: 0s;">
+                <i class="fa fa-heart text-2xl"></i>
+            </div>
+            <div class="absolute top-[20%] right-[20%] text-pink-400 animate-float" style="animation-delay: 1s;">
+                <i class="fa fa-heart text-xl"></i>
+            </div>
+            <div class="absolute bottom-[30%] left-[25%] text-red-400 animate-float" style="animation-delay: 2s;">
+                <i class="fa fa-heart text-2xl"></i>
+            </div>
+            <div class="absolute bottom-[20%] right-[30%] text-pink-500 animate-float" style="animation-delay: 1.5s;">
+                <i class="fa fa-heart text-xl"></i>
+            </div>
+        </div>
+
+        <!-- 标题内容 -->
+        <div class="container mx-auto px-4 z-20 text-center">
+            <h1 class="text-[clamp(2.5rem,8vw,5rem)] font-['Ma_Shan_Zheng'] text-white text-shadow mb-6 animate-pulse-slow">
+                七夕情人节
+            </h1>
+            <p class="text-[clamp(1.2rem,3vw,1.8rem)] text-white text-shadow max-w-2xl mx-auto mb-10">
+                执子之手，与子偕老
+            </p>
+            <a href="#message" class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-full text-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl inline-block">
+                写下爱的告白
+            </a>
+        </div>
+
+        <!-- 向下滚动箭头 -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
+            <a href="#legend" class="text-white text-3xl opacity-80 hover:opacity-100 transition-opacity duration-300">
+                <i class="fa fa-angle-down"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- 七夕传说 -->
+    <section id="legend" class="py-20 bg-white/80">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,3rem)] font-['Ma_Shan_Zheng'] text-red-600 mb-4">七夕传说</h2>
+                <div class="w-24 h-1 bg-red-400 mx-auto"></div>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center gap-12 max-w-5xl mx-auto">
+                <div class="md:w-1/2">
+                    <img src="https://picsum.photos/id/1040/800/600" alt="牛郎织女" class="w-full h-auto rounded-lg shadow-lg transform hover:scale-[1.02] transition-transform duration-500">
+                </div>
+                <div class="md:w-1/2 text-gray-700 space-y-4">
+                    <p class="text-lg leading-relaxed">
+                        七夕节，又称七巧节、七姐节、女儿节、乞巧节等，是中国民间的传统节日。七夕节由星宿崇拜衍化而来，为传统意义上的七姐诞，因拜祭“七姐”活动在七月七晩上举行，故名“七夕”。
+                    </p>
+                    <p class="text-lg leading-relaxed">
+                        经历史发展，七夕被赋予了“牛郎织女”的美丽爱情传说，使其成为了象征爱情的节日，从而被认为是中国最具浪漫色彩的传统节日，在当代更是产生了“中国情人节”的文化含义。
+                    </p>
+                    <p class="text-lg leading-relaxed">
+                        传说中，牛郎织女被银河分隔，只能在每年的七月七日通过鹊桥相会。这一传说表达了古人对真挚爱情的向往和赞美。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 爱的告白 -->
+    <section id="message" class="py-20 bg-gradient-to-b from-red-50 to-pink-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,3rem)] font-['Ma_Shan_Zheng'] text-red-600 mb-4">爱的告白</h2>
+                <div class="w-24 h-1 bg-red-400 mx-auto"></div>
+                <p class="mt-4 text-gray-600 max-w-2xl mx-auto">在这里，写下你对TA的爱意，让全世界都知道你们的爱情故事</p>
+            </div>
+
+            <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-8 mb-12">
+                <form id="message-form" class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-gray-700 font-medium mb-2">你的名字</label>
+                        <input type="text" id="name" name="name" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300" placeholder="请输入你的名字">
+                    </div>
+                    <div>
+                        <label for="lover-name" class="block text-gray-700 font-medium mb-2">TA的名字</label>
+                        <input type="text" id="lover-name" name="lover-name" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300" placeholder="请输入TA的名字">
+                    </div>
+                    <div>
+                        <label for="message-content" class="block text-gray-700 font-medium mb-2">爱的告白</label>
+                        <textarea id="message-content" name="message-content" rows="5" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300" placeholder="请写下你想对TA说的话..."></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+                        <i class="fa fa-heart"></i> 发送爱的告白
+                    </button>
+                </form>
+            </div>
+
+            <!-- 告白墙 -->
+            <div id="message-wall" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                <!-- 告白内容会通过JavaScript动态添加 -->
+                <div class="bg-white rounded-lg shadow-md p-6 transform hover:scale-[1.03] transition-transform duration-300 border-l-4 border-red-500">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold text-red-600">小明</h3>
+                        <span class="text-gray-500 text-sm">致 小红</span>
+                    </div>
+                    <p class="text-gray-700 mb-4">从见到你的第一眼起，我就知道你是我要找的人。七夕快乐，我的爱人！</p>
+                    <div class="text-right text-gray-500 text-sm">2023年8月22日</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 爱情计时 -->
+    <section id="countdown" class="py-20 bg-white/80">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,3rem)] font-['Ma_Shan_Zheng'] text-red-600 mb-4">爱情计时</h2>
+                <div class="w-24 h-1 bg-red-400 mx-auto"></div>
+                <p class="mt-4 text-gray-600 max-w-2xl mx-auto">记录你们在一起的每一分每一秒</p>
+            </div>
+
+            <div class="max-w-3xl mx-auto bg-gradient-to-r from-red-500 to-pink-500 rounded-xl shadow-xl p-8 text-white">
+                <div class="text-center mb-8">
+                    <h3 id="couple-names" class="text-2xl font-bold mb-2">我们的爱情</h3>
+                    <p id="anniversary-date" class="text-lg opacity-90">开始于: 2023-01-01</p>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center mb-8">
+                    <div class="bg-white/20 backdrop-blur-sm rounded-lg p-4">
+                        <div id="years" class="text-4xl font-bold mb-1">0</div>
+                        <div class="text-sm opacity-90">年</div>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-lg p-4">
+                        <div id="months" class="text-4xl font-bold mb-1">0</div>
+                        <div class="text-sm opacity-90">月</div>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-lg p-4">
+                        <div id="days" class="text-4xl font-bold mb-1">0</div>
+                        <div class="text-sm opacity-90">日</div>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-lg p-4">
+                        <div id="hours" class="text-4xl font-bold mb-1">0</div>
+                        <div class="text-sm opacity-90">时</div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div id="total-days" class="text-2xl font-bold mb-2">已经在一起 <span class="text-yellow-200">0</span> 天</div>
+                    <button id="set-anniversary" class="mt-4 bg-white text-red-500 hover:bg-opacity-90 font-medium py-2 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-md">
+                        设置纪念日
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 礼物推荐 -->
+    <section id="gifts" class="py-20 bg-gradient-to-b from-pink-50 to-red-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,3rem)] font-['Ma_Shan_Zheng'] text-red-600 mb-4">礼物推荐</h2>
+                <div class="w-24 h-1 bg-red-400 mx-auto"></div>
+                <p class="mt-4 text-gray-600 max-w-2xl mx-auto">为TA挑选一份充满爱意的礼物</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- 礼物卡片1 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-[1.03] transition-all duration-300 group">
+                    <div class="relative h-60 overflow-hidden">
+                        <img src="https://picsum.photos/id/1062/800/600" alt="珠宝首饰" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                            <div class="p-6 text-white">
+                                <h3 class="text-xl font-bold mb-2">珠宝首饰</h3>
+                                <p class="text-sm opacity-90">永恒的爱情象征</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-red-600 transition-colors duration-300">珠宝首饰</h3>
+                        <p class="text-gray-600 mb-4">璀璨的珠宝如同你们的爱情，闪耀夺目，永恒不变。</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-red-600 font-bold">¥1,999+</span>
+                            <button class="bg-red-100 hover:bg-red-200 text-red-600 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300">
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 礼物卡片2 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-[1.03] transition-all duration-300 group">
+                    <div class="relative h-60 overflow-hidden">
+                        <img src="https://picsum.photos/id/152/800/600" alt="浪漫晚餐" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                            <div class="p-6 text-white">
+                                <h3 class="text-xl font-bold mb-2">浪漫晚餐</h3>
+                                <p class="text-sm opacity-90">二人世界的温馨时光</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-red-600 transition-colors duration-300">浪漫晚餐</h3>
+                        <p class="text-gray-600 mb-4">在温馨的氛围中，享受美食与彼此的陪伴，共度浪漫时光。</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-red-600 font-bold">¥599+</span>
+                            <button class="bg-red-100 hover:bg-red-200 text-red-600 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300">
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 礼物卡片3 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-[1.03] transition-all duration-300 group">
+                    <div class="relative h-60 overflow-hidden">
+                        <img src="https://picsum.photos/id/102/800/600" alt="玫瑰花束" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                            <div class="p-6 text-white">
+                                <h3 class="text-xl font-bold mb-2">玫瑰花束</h3>
+                                <p class="text-sm opacity-90">爱的经典表达</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-red-600 transition-colors duration-300">玫瑰花束</h3>
+                        <p class="text-gray-600 mb-4">鲜艳的玫瑰象征着热烈的爱情，是表达心意的经典之选。</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-red-600 font-bold">¥299+</span>
+                            <button class="bg-red-100 hover:bg-red-200 text-red-600 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300">
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-red-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h3 class="text-2xl font-['Ma_Shan_Zheng'] mb-2">鹊桥相会</h3>
+                    <p class="text-red-200">七夕情人节专属网站</p>
+                </div>
+                <div class="flex space-x-6 mb-6 md:mb-0">
+                    <a href="#home" class="text-white hover:text-red-200 transition-colors duration-300"><i class="fa fa-home text-xl"></i></a>
+                    <a href="#legend" class="text-white hover:text-red-200 transition-colors duration-300"><i class="fa fa-book text-xl"></i></a>
+                    <a href="#message" class="text-white hover:text-red-200 transition-colors duration-300"><i class="fa fa-heart text-xl"></i></a>
+                    <a href="#countdown" class="text-white hover:text-red-200 transition-colors duration-300"><i class="fa fa-clock-o text-xl"></i></a>
+                </div>
+                <div class="text-center md:text-right">
+                    <p class="text-red-200">© 2023 鹊桥相会. 所有权利保留.</p>
+                    <p class="text-sm text-red-300 mt-1">祝天下有情人终成眷属</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('py-2', 'shadow-md');
+                navbar.classList.remove('py-3');
+            } else {
+                navbar.classList.add('py-3');
+                navbar.classList.remove('py-2', 'shadow-md');
+            }
+        });
+
+        // 移动端菜单切换
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuToggle.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                mobileMenu.classList.add('hidden'); // 关闭移动端菜单
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // 爱的告白表单提交
+        const messageForm = document.getElementById('message-form');
+        const messageWall = document.getElementById('message-wall');
+
+        messageForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const loverName = document.getElementById('lover-name').value;
+            const messageContent = document.getElementById('message-content').value;
+
+            if (!name || !loverName || !messageContent) {
+                alert('请填写完整信息');
+                return;
+            }
+
+            // 获取当前日期
+            const today = new Date();
+            const dateString = today.getFullYear() + '年' + (today.getMonth() + 1) + '月' + today.getDate() + '日';
+
+            // 创建新的告白卡片
+            const newMessage = document.createElement('div');
+            newMessage.className = 'bg-white rounded-lg shadow-md p-6 transform hover:scale-[1.03] transition-transform duration-300 border-l-4 border-red-500 animate-float';
+            newMessage.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-xl font-bold text-red-600">${name}</h3>
+                    <span class="text-gray-500 text-sm">致 ${loverName}</span>
+                </div>
+                <p class="text-gray-700 mb-4">${messageContent}</p>
+                <div class="text-right text-gray-500 text-sm">${dateString}</div>
+            `;
+
+            // 添加到告白墙开头
+            messageWall.insertBefore(newMessage, messageWall.firstChild);
+
+            // 清空表单
+            messageForm.reset();
+
+            // 提示成功
+            alert('爱的告白已发送！');
+        });
+
+        // 爱情计时器
+        function updateCountdown() {
+            // 默认纪念日，用户可以自行设置
+            let anniversaryDate = localStorage.getItem('anniversaryDate') || '2023-01-01';
+            let coupleNames = localStorage.getItem('coupleNames') || '我们的爱情';
+
+            // 更新显示的名称和日期
+            document.getElementById('couple-names').textContent = coupleNames;
+            document.getElementById('anniversary-date').textContent = '开始于: ' + anniversaryDate;
+
+            // 计算时间差
+            const startDate = new Date(anniversaryDate);
+            const now = new Date();
+
+            // 计算总天数
+            const totalDays = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
+            document.getElementById('total-days').innerHTML = `已经在一起 <span class="text-yellow-200">${totalDays}</span> 天`;
+
+            // 计算年、月、日、小时
+            let years = now.getFullYear() - startDate.getFullYear();
+            let months = now.getMonth() - startDate.getMonth();
+            let days = now.getDate() - startDate.getDate();
+            let hours = now.getHours();
+
+            // 调整月份和年份
+            if (days < 0) {
+                months--;
+                const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                days += lastMonth.getDate();
+            }
+
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            // 更新显示
+            document.getElementById('years').textContent = years;
+            document.getElementById('months').textContent = months;
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+        }
+
+        // 设置纪念日
+        document.getElementById('set-anniversary').addEventListener('click', function() {
+            const coupleNames = prompt('请输入你们的名字（例如：小明和小红）:');
+            if (coupleNames === null) return;
+
+            const anniversaryDate = prompt('请输入你们的纪念日（格式：YYYY-MM-DD）:');
+            if (anniversaryDate === null) return;
+
+            // 验证日期格式
+            const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+            if (!dateRegex.test(anniversaryDate)) {
+                alert('日期格式不正确，请使用YYYY-MM-DD格式');
+                return;
+            }
+
+            // 保存到本地存储
+            localStorage.setItem('coupleNames', coupleNames);
+            localStorage.setItem('anniversaryDate', anniversaryDate);
+
+            // 更新计时器
+            updateCountdown();
+        });
+
+        // 初始化计时器
+        updateCountdown();
+        setInterval(updateCountdown, 3600000); // 每小时更新一次
+    </script>
+</body>
+</html>
