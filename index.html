@@ -1,1557 +1,630 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我们的爱情</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #ffcce6 0%, #c9e6ff 100%);
-            color: #5c3a6d;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        .hearts {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .deer-svg {
-            width: 100px;
-            height: 100px;
-        }
-
-        .heart {
-            position: absolute;
-            font-size: 20px;
-            color: #ff2a70;
-            opacity: 0.7;
-            animation: fall 8s linear infinite;
-        }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(-10%) rotate(0deg);
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(100vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-            z-index: 2;
-        }
-
-        header {
-            text-align: center;
-            padding: 40px 0;
-            position: relative;
-        }
-
-        .title {
-            font-size: 3.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
-            color: #8a4f7d;
-            background: linear-gradient(to right, #8a4f7d, #5c3a6d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 30px;
-            font-weight: 300;
-            color: #5c3a6d;
-        }
-
-        .deer-fish-container {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin: 40px 0;
-            flex-wrap: wrap;
-        }
-
-        .deer, .fish {
-            text-align: center;
-            max-width: 300px;
-            padding: 20px;
-        }
-
-        .deer-icon, .fish-icon {
-            font-size: 5rem;
-            margin-bottom: 15px;
-            display: block;
-            height: 120px;
-        }
-
-        .deer-icon {
-            color: #a67f8e;
-            animation: bounce 3s infinite;
-        }
-
-        .fish-icon {
-            color: #4a7eb0;
-            animation: swim 4s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-
-        @keyframes swim {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(15px); }
-        }
-
-        .deer h3, .fish h3 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            color: #5c3a6d;
-        }
-
-        .deer p, .fish p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: #5c3a6d;
-        }
-
-        .countdown {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 30px 0;
-        }
-
-        .countdown-item {
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 8px 16px rgba(138, 79, 125, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.8);
-        }
-
-        .digits-container {
-            display: flex;
-            gap: 5px;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-
-        .digit-flip {
-            position: relative;
-            width: 45px;
-            height: 60px;
-            overflow: hidden;
-            border-radius: 8px;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .digit {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.2rem;
-            font-weight: bold;
-            color: #8a4f7d;
-            transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
-        }
-
-        .countdown-label {
-            font-size: 1rem;
-            color: #5c3a6d;
-            font-weight: 500;
-        }
-
-        .love-letter {
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 20px;
-            padding: 40px;
-            margin: 40px 0;
-            line-height: 1.8;
-            font-size: 1.2rem;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 8px 32px rgba(138, 79, 125, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            color: #5c3a6d;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .love-letter::before {
-            content: "";
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 150px;
-            height: 150px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M244 84L255.1 96L267.1 84.02C300.6 51.37 347 36.51 392.6 44.1C461.5 55.58 512 115.2 512 185.1V190.9C512 232.4 494.8 272.1 464.4 300.4L283.7 469.1C276.2 476.1 266.3 480 256 480C245.7 480 235.8 476.1 228.3 469.1L47.59 300.4C17.23 272.1 0 232.4 0 190.9V185.1C0 115.2 50.52 55.58 119.4 44.1C164.1 36.51 211.4 51.37 244 84C243.1 84 244 84.01 244 84L244 84z" fill="%23ff99cc"/></svg>') no-repeat;
-            background-size: contain;
-            opacity: 0.2;
-            transform: rotate(15deg);
-            z-index: 0;
-        }
-
-        .love-letter h2 {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #8a4f7d;
-            font-size: 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .love-letter p {
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .photo-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin: 40px 0;
-        }
-
-        .photo-item {
-            border-radius: 15px;
-            overflow: hidden;
-            height: 280px;
-            position: relative;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            box-shadow: 0 10px 20px rgba(138, 79, 125, 0.3);
-            border: 3px solid white;
-        }
-
-        .photo-item:hover {
-            transform: scale(1.05);
-        }
-
-        .photo-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .photo-caption {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(138, 79, 125, 0.8);
-            color: white;
-            padding: 15px;
-            text-align: center;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-            font-weight: 500;
-        }
-
-        .photo-item:hover .photo-caption {
-            transform: translateY(0);
-        }
-
-        .memories-section {
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 20px;
-            padding: 30px;
-            margin: 40px 0;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 8px 32px rgba(138, 79, 125, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.8);
-        }
-
-        .memories-section h2 {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #8a4f7d;
-            font-size: 2.2rem;
-        }
-
-        .memory-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .memory-item {
-            background: rgba(255, 240, 245, 0.8);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(138, 79, 125, 0.2);
-        }
-
-        .memory-item i {
-            font-size: 2.5rem;
-            color: #8a4f7d;
-            margin-bottom: 15px;
-        }
-
-        .memory-item h3 {
-            color: #5c3a6d;
-            margin-bottom: 10px;
-        }
-
-        .memory-item p {
-            color: #5c3a6d;
-            line-height: 1.6;
-        }
-
-        /* 专属情歌库核心样式 */
-        .love-songs-library {
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 20px;
-            padding: 40px;
-            margin: 40px 0;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 8px 32px rgba(138, 79, 125, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            position: relative;
-        }
-
-        .love-songs-library::before {
-            content: "";
-            position: absolute;
-            top: -30px;
-            left: -30px;
-            width: 120px;
-            height: 120px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M313.4 32.9c26 4.2 47.4 26.6 47.4 53.9v1.3c0 28.5-18.7 52.1-44.9 60.4l-121.3 45.5c-25.4 9.6-54.2 9.6-79.6 0L44.9 148.5C18.7 139.3 0 115.6 0 87.1V85.8c0-27.3 21.5-49.7 47.4-53.9 28.8-4.6 58.9 11.5 68.9 39.9l15.9 46.2a16 16 0 0 0 15 10.9h91.8a16 16 0 0 0 15-10.9l15.9-46.2c10-28.4 40.1-44.5 68.9-39.9zM160 320c-17.7 0-32 14.3-32 32v128c0 17.7 14.3 32 32 32s32-14.3 32-32V352c0-17.7-14.3-32-32-32zm192 0c-17.7 0-32 14.3-32 32v128c0 17.7 14.3 32 32 32s32-14.3 32-32V352c0-17.7-14.3-32-32-32z" fill="%23ff99cc"/></svg>') no-repeat;
-            background-size: contain;
-            opacity: 0.2;
-            transform: rotate(-15deg);
-            z-index: 0;
-        }
-
-        .library-header {
-            text-align: center;
-            margin-bottom: 30px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .library-header h2 {
-            font-size: 2.2rem;
-            color: #8a4f7d;
-            margin-bottom: 10px;
-        }
-
-        .library-header p {
-            font-size: 1.1rem;
-            color: #5c3a6d;
-            opacity: 0.9;
-        }
-
-        .songs-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 30px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .tab-btn {
-            background: rgba(255, 240, 245, 0.8);
-            border: none;
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            color: #5c3a6d;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 10px rgba(138, 79, 125, 0.1);
-        }
-
-        .tab-btn.active {
-            background: linear-gradient(to right, #a67f8e, #8a4f7d);
-            color: white;
-            box-shadow: 0 5px 15px rgba(138, 79, 125, 0.3);
-        }
-
-        .songs-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .song-card {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(138, 79, 125, 0.15);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-
-        .song-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(138, 79, 125, 0.25);
-            border-color: #ff99cc;
-        }
-
-        .song-cover {
-            width: 100%;
-            height: 180px;
-            background-image: url("wife1.jpg"); /* 她的默认封面图（需替换） */
-            background-size: cover;
-            background-position: center;
-            min-height: 30%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .song-cover i {
-            font-size: 4rem;
-            color: #8a4f7d;
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
-        }
-
-        .song-card:hover .song-cover i {
-            opacity: 1;
-        }
-
-        .song-cover .playing-indicator {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: #ff2a70;
-            color: white;
-            font-size: 0.8rem;
-            padding: 3px 8px;
-            border-radius: 10px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .song-card.playing .song-cover .playing-indicator {
-            opacity: 1;
-        }
-
-        .song-info {
-            padding: 18px;
-        }
-
-        .song-title {
-            font-size: 1.2rem;
-            color: #8a4f7d;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-
-        .song-singer {
-            font-size: 0.95rem;
-            color: #5c3a6d;
-            opacity: 0.8;
-        }
-
-        .player-controls {
-            background: linear-gradient(to right, #8a4f7d, #a67f8e);
-            border-radius: 15px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            color: white;
-            position: relative;
-            z-index: 1;
-            box-shadow: 0 5px 15px rgba(138, 79, 125, 0.3);
-        }
-
-        .now-playing {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex: 1;
-            min-width: 200px;
-        }
-
-        /* 【关键修改】初始播放器封面样式：添加默认图片 */
-        .now-playing-cover {
-            width: 60px;
-            height: 60px;
-            border-radius: 10px;
-            /* 页面初始默认封面图（必须替换为你的实际图片路径！） */
-            background-image: url("default.png");
-            background-size: cover; /* 图片填满容器 */
-            background-position: center; /* 图片居中 */
-            background-color: #ffcce6; /* 图片加载失败时的备用背景色 */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .now-playing-cover i {
-            font-size: 1.8rem;
-            color: #8a4f7d;
-            transition: opacity 0.3s ease;
-            opacity: 0; /* 初始隐藏图标（因有默认封面图） */
-        }
-
-        .now-playing-info h4 {
-            font-size: 1.1rem;
-            margin-bottom: 3px;
-        }
-
-        .now-playing-info p {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        .control-buttons {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex: 2;
-            justify-content: center;
-        }
-
-        .control-btn {
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: transform 0.2s ease, color 0.2s ease;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .control-btn:hover {
-            color: #ffcce6;
-            transform: scale(1.1);
-        }
-
-        .play-pause-btn {
-            width: 55px;
-            height: 55px;
-            background: white;
-            color: #8a4f7d;
-            font-size: 1.5rem;
-        }
-
-        .play-pause-btn:hover {
-            color: #8a4f7d;
-            transform: scale(1.15);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-        }
-
-        .volume-control {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex: 1;
-            min-width: 120px;
-        }
-
-        .volume-control i {
-            font-size: 1.1rem;
-        }
-
-        .volume-slider {
-            width: 100%;
-            height: 6px;
-            border-radius: 3px;
-            background: rgba(255, 255, 255, 0.3);
-            outline: none;
-            appearance: none;
-        }
-
-        .volume-slider::-webkit-slider-thumb {
-            appearance: none;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: white;
-            cursor: pointer;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-        }
-
-        #audio-player {
-            display: none;
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px 0;
-            margin-top: 40px;
-            font-size: 1.1rem;
-            opacity: 0.9;
-            color: #5c3a6d;
-            border-top: 2px solid rgba(255, 255, 255, 0.5);
-        }
-
-        .heart-pulse {
-            display: inline-block;
-            color: #ff2a70;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-            100% { transform: scale(1); }
-        }
-
-        /* 新增：角色信息弹窗样式 */
-        .character-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(92, 58, 109, 0.6);
-            backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .character-modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #fff0f5 0%, #f0f8ff 100%);
-            width: 90%;
-            max-width: 600px;
-            border-radius: 25px;
-            padding: 35px;
-            box-shadow: 0 15px 40px rgba(138, 79, 125, 0.3);
-            border: 3px solid rgba(255, 255, 255, 0.9);
-            position: relative;
-            transform: translateY(30px);
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .character-modal.active .modal-content {
-            transform: translateY(0);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: transparent;
-            border: none;
-            color: #8a4f7d;
-            font-size: 1.5rem;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-        }
-
-        .modal-close:hover {
-            background: rgba(138, 79, 125, 0.1);
-            color: #ff2a70;
-            transform: rotate(90deg);
-        }
-
-        .modal-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid rgba(138, 79, 125, 0.1);
-        }
-
-        .modal-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid #ffcce6;
-            box-shadow: 0 5px 15px rgba(138, 79, 125, 0.2);
-        }
-
-        .modal-title-group {
-            flex: 1;
-        }
-
-        .modal-title {
-            font-size: 2rem;
-            color: #8a4f7d;
-            margin-bottom: 5px;
-            background: linear-gradient(to right, #8a4f7d, #5c3a6d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .modal-subtitle {
-            font-size: 1.1rem;
-            color: #5c3a6d;
-            opacity: 0.9;
-        }
-
-        .modal-body {
-            line-height: 1.8;
-            font-size: 1.1rem;
-            color: #5c3a6d;
-        }
-
-        .modal-body p {
-            margin-bottom: 15px;
-        }
-
-        .modal-body strong {
-            color: #8a4f7d;
-        }
-
-        .modal-footer {
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 2px solid rgba(138, 79, 125, 0.1);
-            text-align: right;
-            font-style: italic;
-            color: #8a4f7d;
-        }
-
-        @media (max-width: 768px) {
-            .title {
-                font-size: 2.8rem;
-            }
-
-            .subtitle {
-                font-size: 1.3rem;
-            }
-
-            .countdown {
-                flex-wrap: wrap;
-                gap: 15px;
-            }
-
-            .countdown-item {
-                padding: 15px;
-            }
-
-            .digit-flip {
-                width: 35px;
-                height: 50px;
-            }
-
-            .digit {
-                font-size: 1.8rem;
-            }
-
-            .love-letter {
-                padding: 25px;
-                font-size: 1.1rem;
-            }
-
-            .photo-gallery {
-                grid-template-columns: 1fr;
-            }
-
-            .deer, .fish {
-                margin-bottom: 30px;
-            }
-
-            .love-songs-library {
-                padding: 25px;
-            }
-
-            .player-controls {
-                flex-direction: column;
-                gap: 15px;
-                padding: 15px;
-            }
-
-            .now-playing, .control-buttons, .volume-control {
-                width: 100%;
-                flex: none;
-            }
-
-            .control-buttons {
-                gap: 10px;
-            }
-
-            /* 移动端弹窗适配 */
-            .modal-header {
-                flex-direction: column;
-                text-align: center;
-                gap: 15px;
-            }
-
-            .modal-title {
-                font-size: 1.6rem;
-            }
-
-            .modal-content {
-                padding: 25px 20px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>特别的心意</title>
+  <!-- 引入Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- 引入Font Awesome -->
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            love: '#ec4899',
+          },
+        }
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .text-shadow {
+        text-shadow: 0 2px 10px rgba(236, 72, 153, 0.3);
+      }
+      .heart-beat {
+        animation: heartBeat 1.5s infinite;
+      }
+      .wiggle {
+        animation: wiggle 1s ease-in-out infinite;
+      }
+      .star-twinkle {
+        animation: twinkle 2s infinite alternate;
+      }
+      .star-float {
+        animation: float 8s infinite ease-in-out;
+      }
+    }
+
+    /* 核心动画定义 */
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1); }
+      14% { transform: scale(1.1); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.1); }
+      70% { transform: scale(1); }
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.5; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1.1); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(10px, -10px); }
+      50% { transform: translate(5px, 10px); }
+      75% { transform: translate(-10px, 5px); }
+    }
+
+    /* 流星特效增强 */
+    @keyframes starPulse {
+      0%, 100% {
+        opacity: 1;
+        transform: scale(1.2);
+        text-shadow: 0 0 15px rgba(59, 130, 246, 1);
+      }
+      50% {
+        opacity: 0.8;
+        transform: scale(1);
+        text-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+      }
+    }
+
+    .meteor {
+      position: absolute;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .meteor-trail {
+      position: absolute;
+      background: linear-gradient(to right,
+          rgba(59, 130, 246, 0.8) 0%,
+          rgba(147, 197, 253, 0.6) 20%,
+          rgba(147, 197, 253, 0.4) 40%,
+          rgba(147, 197, 253, 0.2) 60%,
+          rgba(147, 197, 253, 0.1) 80%,
+          rgba(147, 197, 253, 0) 100%);
+      transform-origin: left center;
+      box-shadow: 0 0 12px 2px rgba(59, 130, 246, 0.3);
+    }
+
+    .meteor-star {
+      position: absolute;
+      color: #3b82f6;
+      z-index: 2;
+      animation: starPulse 0.6s infinite;
+    }
+
+    /* 背景渐变动画 */
+    body {
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* 信封样式 */
+    .envelope-scene {
+      perspective: 1000px;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .envelope-wrapper {
+      position: relative;
+      width: 80%;
+      max-width: 280px;
+      height: 200px;
+      cursor: pointer;
+    }
+
+    .envelope {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+
+    .envelope-opened .envelope {
+      transform: rotateX(180deg);
+    }
+
+    .envelope-front, .envelope-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      background-color: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .envelope-front {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .envelope-back {
+      transform: rotateX(180deg);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding-top: 30px;
+    }
+
+    .envelope-flap {
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      height: 55%;
+      background-color: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px 8px 0 0;
+      transform-origin: bottom;
+      transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s;
+      z-index: 2;
+    }
+
+    .envelope-opened .envelope-flap {
+      transform: rotateX(180deg);
+    }
+
+    .envelope-seal {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      color: #ec4899;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-shadow: 0 0 0 4px rgba(236, 72, 153, 0.2);
+      z-index: 3;
+      transition: all 0.5s ease-out;
+      opacity: 1;
+    }
+
+    .envelope-opened .envelope-seal {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0);
+    }
+
+    .envelope-text {
+      color: #5a3d5c;
+      font-weight: 600;
+      font-size: 18px;
+      text-align: center;
+      line-height: 1.5;
+      padding: 0 15px;
+    }
+
+    /* 另一版入口样式 */
+    .another-version {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      background-color: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.5s ease;
+    }
+
+    .another-version.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .another-version:hover {
+      color: white;
+      background-color: rgba(0, 0, 0, 0.3);
+      transform: translateY(-2px);
+    }
+  </style>
 </head>
-<body>
-    <div class="hearts" id="hearts"></div>
 
-    <div class="container">
-        <header>
-            <h1 class="title">我们的爱情</h1>
-        </header>
+<body class="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-purple-900 flex items-center justify-center p-4 font-sans overflow-x-hidden relative">
+  <!-- 星星背景 -->
+  <div id="stars-container" class="fixed inset-0 pointer-events-none z-0"></div>
 
-        <div class="deer-fish-container">
-            <div class="deer">
-                <div class="deer-icon">
-                    <img src="deer.png" alt="一只可爱的梅花鹿" class="deer-svg" style="opacity: 77%;" />
-                </div>
-                <h3>灵动的小鹿</h3>
-                <p>像小鹿一样的宝宝，活泼可爱，天真浪漫，自由自在<br>你的笑容照亮了我的世界</p>
-            </div>
+  <!-- 流星容器 -->
+  <div id="meteors-container" class="fixed inset-0 pointer-events-none z-0"></div>
 
-            <div class="fish">
-                <i class="fas fa-fish fish-icon"></i>
-                <h3>向往大海的小鱼</h3>
-                <p>像小鱼儿一样的我，向往大海，追求更好的环境<br>渴望与你一起游向更美好的世界</p>
-            </div>
-        </div>
-        <span class="subtitle" style="display: block;vertical-align: middle;text-align: center;width: 100%">从相遇的那一刻起，已经走过了</span>
-        <!-- 时间计数器 -->
-        <div class="countdown">
-            <div class="countdown-item">
-                <div class="digits-container" id="days-container"></div>
-                <div class="countdown-label">天</div>
-            </div>
-            <div class="countdown-item">
-                <div class="digits-container" id="hours-container"></div>
-                <div class="countdown-label">时</div>
-            </div>
-            <div class="countdown-item">
-                <div class="digits-container" id="minutes-container"></div>
-                <div class="countdown-label">分</div>
-            </div>
-            <div class="countdown-item">
-                <div class="digits-container" id="seconds-container"></div>
-                <div class="countdown-label">秒</div>
-            </div>
-        </div>
 
-        <!-- 爱情信 -->
-        <div class="love-letter">
-            <h2>给我的小鹿：</h2>
-            <p>从我们相遇的那一天起，每一秒都变得特别。你就像林间的小鹿，活泼可爱，天真浪漫，自由自在，你的每一个动作都让我心动不已。</p>
-            <p>我是那条向往大海的小鱼，一直渴望游向更广阔的世界。但自从遇见了你，我发现最美好的世界就是有你在的地方。你是我游向大海的动力，也是我最终想要回归的港湾。</p>
-            <p>我们一起走过的每一天，都成为了我生命中最珍贵的回忆。无论是欢笑还是泪水，我都感激有你陪伴在我身边。</p>
-            <p>未来的路还很长，我希望能一直牵着你的手，像小鹿和小鱼一样，共同探索这个世界的美好，度过每一个春夏秋冬。</p>
-            <p>嘻嘻，永远爱你宝宝，老婆，亲爱的，么么</p>
-            <p style="text-align: right; margin-top: 25px;">永远爱你的小鱼 <span class="heart-pulse">❤</span></p>
-        </div>
+  <div class="max-w-4xl w-full mx-auto relative z-10">
+    <!-- 初始问题界面 - 默认显示 -->
+    <div id="stage1" class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-8 text-center transition-all duration-500 transform border border-pink-100">
+      <h1 class="text-[clamp(1.5rem,4vw,2.2rem)] font-bold text-gray-800 mb-6 text-shadow">有件很重要的事想告诉你...</h1>
+      <p class="text-[clamp(1.1rem,3vw,1.5rem)] text-gray-700 mb-10">我喜欢你，你愿意做我的女朋友吗？</p>
 
-        <!-- 甜蜜回忆墙 -->
-        <div class="memories-section">
-            <h2>我们的甜蜜回忆</h2>
-            <div class="memory-grid">
-                <div class="memory-item">
-                    <i class="fas fa-heart"></i>
-                    <h3>第一次相遇</h3>
-                    <p>那天阳光正好，你的笑容像小鹿一样灵动，让我一见倾心</p>
-                </div>
-                <div class="memory-item">
-                    <i class="fas fa-utensils"></i>
-                    <h3>第一次约会</h3>
-                    <p>你害羞的样子，是我心中最美的画面</p>
-                </div>
-                <div class="memory-item">
-                    <i class="fas fa-moon"></i>
-                    <h3>星空下的承诺</h3>
-                    <p>在满天繁星下，我们许下相守一生的诺言</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 照片画廊（添加角色标识data-character） -->
-        <div class="photo-gallery">
-            <div class="photo-item" data-character="ran">
-                <img src="wife.jpg" alt="毛利兰">
-                <div class="photo-caption">毛利兰</div>
-            </div>
-            <div class="photo-item" data-character="shinichi">
-                <img src="me.jpg" alt="工藤新一">
-                <div class="photo-caption">工藤新一</div>
-            </div>
-            <div class="photo-item" data-character="judy">
-                <img src="me2.jpg" alt="朱迪-霍普斯（Judy Hopps）">
-                <div class="photo-caption">朱迪-霍普斯（Judy Hopps）</div>
-            </div>
-            <div class="photo-item" data-character="nick">
-                <img src="wife2.jpg" alt="尼克-王尔德（Nick Wilde）">
-                <div class="photo-caption">尼克-王尔德（Nick Wilde）</div>
-            </div>
-        </div>
-
-        <!-- 专属情歌库版块 -->
-        <div class="love-songs-library">
-            <div class="library-header">
-                <h2>💌 我们的专属情歌</h2>
-                <p>7首她的温柔哼唱 + 1首我的五音不全</p>
-            </div>
-
-            <!-- 歌曲分类标签 -->
-            <div class="songs-tabs">
-                <button class="tab-btn active" data-tab="her-songs">她唱的歌 (7首)</button>
-                <button class="tab-btn" data-tab="my-songs">我唱的歌 (1首)</button>
-            </div>
-
-            <!-- 歌曲列表容器 -->
-            <div class="songs-container">
-                <!-- 她唱的歌（7首） -->
-                <div class="song-card"
-                     data-tab="her-songs"
-                     data-src="纸短情长.m4a"
-                     data-title="纸短情长"
-                     data-singer="我的小鹿"
-                     data-cover="wife.jpg"> <!-- 她的封面图（需替换） -->
-                    <div class="song-cover">
-                        <i class="fas fa-music"></i>
-                        <div class="playing-indicator">播放中</div>
-                    </div>
-                    <div class="song-info">
-                        <div class="song-title">纸短情长</div>
-                        <div class="song-singer">演唱：我的小鹿</div>
-                    </div>
-                </div>
-
-                <div class="song-card"
-                     data-tab="her-songs"
-                     data-src="盗将行.m4a"
-                     data-title="盗将行"
-                     data-singer="我的小鹿"
-                     data-cover="wife.jpg"> <!-- 她的封面图（需替换） -->
-                    <div class="song-cover">
-                        <i class="fas fa-music"></i>
-                        <div class="playing-indicator">播放中</div>
-                    </div>
-                    <div class="song-info">
-                        <div class="song-title">盗将行</div>
-                        <div class="song-singer">演唱：我的小鹿</div>
-                    </div>
-                </div>
-
-                <div class="song-card"
-                     data-tab="her-songs"
-                     data-src="成都.m4a"
-                     data-title="成都"
-                     data-singer="我的小鹿"
-                     data-cover="wife.jpg"> <!-- 她的封面图（需替换） -->
-                    <div class="song-cover">
-                        <i class="fas fa-music"></i>
-                        <div class="playing-indicator">播放中</div>
-                    </div>
-                    <div class="song-info">
-                        <div class="song-title">成都</div>
-                        <div class="song-singer">演唱：我的小鹿</div>
-                    </div>
-                </div>
-
-                <div class="song-card"
-                     data-tab="her-songs"
-                     data-src="富士山下.m4a"
-                     data-title="富士山下"
-                     data-singer="我的小鹿"
-                     data-cover="wife.jpg"> <!-- 她的封面图（需替换） -->
-                    <div class="song-cover">
-                        <i class="fas fa-music"></i>
-                        <div class="playing-indicator">播放中</div>
-                    </div>
-                    <div class="song-info">
-                        <div class="song-title">富士山下</div>
-                        <div class="song-singer">演唱：我的小鹿</div>
-                    </div>
-                </div>
-
-                <div class="song-card"
-                     data-tab="her-songs"
-                     data-src="借我.m4a"
-                     data-title="借我"
-                     data-singer="我的小鹿"
-                     data-cover="wife.jpg"> <!-- 她的封面图（需替换） -->
-                    <div class="song-cover">
-                        <i class="fas fa-music"></i>
-                        <div class="playing-indicator">播放中</div>
-                    </div>
-                    <div class="song-info">
-                        <div class="song-title">借我</div>
-                        <div class="song-singer">演唱：我的小鹿</div>
-                    </div>
-                </div>
-
-                <div class="song-card"
-                     data-tab="her-songs"
-                     data-src="这一生关于你的风景.m4a"
-                     data-title="这一生关于你的风景"
-                     data-singer="我的小鹿"
-                     data-cover="wife.jpg"> <!-- 她的封面图（需替换） -->
-                    <div class="song-cover">
-                        <i class="fas fa-music"></i>
-                        <div class="playing-indicator">播放中</div>
-                    </div>
-                    <div class="song-info">
-                        <div class="song-title">这一生关于你的风景</div>
-                        <div class="song-singer">演唱：我的小鹿</div>
-                    </div>
-                </div>
-
-                <div class="song-card"
-                     data-tab="her-songs"
-                     data-src="云烟成雨.m4a"
-                     data-title="云烟成雨"
-                     data-singer="我的小鹿"
-                     data-cover="wife.jpg"> <!-- 她的封面图（需替换） -->
-                    <div class="song-cover">
-                        <i class="fas fa-music"></i>
-                        <div class="playing-indicator">播放中</div>
-                    </div>
-                    <div class="song-info">
-                        <div class="song-title">云烟成雨</div>
-                        <div class="song-singer">演唱：我的小鹿</div>
-                    </div>
-                </div>
-
-                <!-- 我唱的歌（1首） -->
-                <div class="song-card"
-                     data-tab="my-songs"
-                     data-src="众里寻她.mp3"
-                     data-title="众里寻她"
-                     data-singer="我（小鱼）"
-                     data-cover="me.jpg"> <!-- 我的封面图（需替换） -->
-                    <div class="song-cover">
-                        <i class="fas fa-music"></i>
-                        <div class="playing-indicator">播放中</div>
-                    </div>
-                    <div class="song-info">
-                        <div class="song-title">众里寻她</div>
-                        <div class="song-singer">演唱：我（小鱼）</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 播放器控制栏 -->
-            <div class="player-controls">
-                <div class="now-playing">
-                    <!-- 初始封面容器：已设置默认图片 -->
-                    <div class="now-playing-cover" id="now-playing-cover">
-                        <i class="fas fa-music" id="cover-icon"></i>
-                    </div>
-                    <div class="now-playing-info">
-                        <h4 id="now-playing-title">未选择歌曲</h4>
-                        <p id="now-playing-singer">点击歌曲开始播放</p>
-                    </div>
-                </div>
-
-                <div class="control-buttons">
-                    <button class="control-btn" id="prev-btn"><i class="fas fa-step-backward"></i></button>
-                    <button class="control-btn play-pause-btn" id="play-pause-btn"><i class="fas fa-play"></i></button>
-                    <button class="control-btn" id="next-btn"><i class="fas fa-step-forward"></i></button>
-                </div>
-
-                <div class="volume-control">
-                    <i class="fas fa-volume-up" id="volume-icon"></i>
-                    <input type="range" class="volume-slider" id="volume-slider" min="0" max="1" step="0.01" value="0.8">
-                </div>
-            </div>
-        </div>
-
-        <footer>
-            <p> crafted with <span class="heart-pulse">❤</span> for my deer | 爱你的每一天</p>
-        </footer>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button id="stage1-yes" class="bg-love hover:bg-love/90 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg transform transition-all duration-300 hover:scale-105 heart-beat">
+          愿意 <i class="fa fa-heart ml-1"></i>
+        </button>
+        <button id="stage1-no" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-8 rounded-full text-lg shadow transition-all duration-300">
+          不愿意 <i class="fa fa-times ml-1"></i>
+        </button>
+      </div>
     </div>
 
-    <!-- 角色信息弹窗（默认隐藏） -->
-    <div class="character-modal" id="characterModal">
-        <div class="modal-content">
-            <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
-            <div class="modal-header">
-                <img src="" alt="" class="modal-avatar" id="modalAvatar">
-                <div class="modal-title-group">
-                    <h2 class="modal-title" id="modalTitle"></h2>
-                    <p class="modal-subtitle" id="modalSubtitle"></p>
-                </div>
-            </div>
-            <div class="modal-body" id="modalBody">
-                <!-- 角色故事内容将通过JS动态插入 -->
-            </div>
-            <div class="modal-footer" id="modalFooter">
-                <!-- 底部署名将通过JS动态插入 -->
-            </div>
-        </div>
+    <!-- 第二阶段：包围的按钮 - 默认隐藏 -->
+    <div id="stage2" class="hidden bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-8 text-center border border-pink-100">
+      <h2 class="text-xl font-bold text-gray-800 mb-6 text-shadow">再认真考虑一下嘛？</h2>
+      <p class="text-gray-600 mb-8">我的心意是认真的~</p>
+
+      <div class="relative h-60 flex items-center justify-center mb-4">
+        <button class="stage2-yes absolute bg-love hover:bg-love/90 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 hover:scale-105" style="top: 10%; left: 50%; transform: translateX(-50%);">
+          愿意 <i class="fa fa-heart ml-1"></i>
+        </button>
+        <button class="stage2-yes absolute bg-love hover:bg-love/90 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 hover:scale-105" style="bottom: 10%; left: 50%; transform: translateX(-50%);">
+          好呀 <i class="fa fa-smile-o ml-1"></i>
+        </button>
+        <button class="stage2-yes absolute bg-love hover:bg-love/90 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 hover:scale-105" style="top: 50%; left: 10%; transform: translateY(-50%);">
+          可以 <i class="fa fa-thumbs-up ml-1"></i>
+        </button>
+        <button class="stage2-yes absolute bg-love hover:bg-love/90 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 hover:scale-105" style="top: 50%; right: 10%; transform: translateY(-50%);">
+          我愿意 <i class="fa fa-heart ml-1"></i>
+        </button>
+
+        <button id="stage2-no" class="bg-gray-300 text-gray-800 font-bold py-3 px-8 rounded-full text-lg shadow transition-all duration-500 transform">
+          不愿意 <i class="fa fa-times ml-1"></i>
+        </button>
+      </div>
     </div>
 
-    <!-- 音频播放器（隐藏） -->
-    <audio id="audio-player" preload="metadata"></audio>
+    <!-- 最终阶段：多个愿意按钮 - 默认隐藏 -->
+    <div id="final-stage" class="hidden flex flex-col items-center justify-center w-full h-full">
+      <h2 class="text-2xl font-bold text-white mb-2 text-shadow">这一定是命中注定！</h2>
+      <p class="text-gray-200 mb-4">选一个按钮，让我知道你的答案吧~</p>
+      <div id="button-container" class="flex flex-wrap justify-center gap-4">
+        <button class="final-btn bg-love hover:bg-love/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">我愿意 ❤️</button>
+        <button class="final-btn bg-love hover:bg-love/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">我愿意 ❤️</button>
+        <button class="final-btn bg-love hover:bg-love/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">我爱你 ❤️</button>
+        <button class="final-btn bg-love hover:bg-love/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">好呀 😊</button>
+        <button class="final-btn bg-love hover:bg-love/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">好呀 😊</button>
+        <button class="final-btn bg-love hover:bg-love/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">我愿意</button>
+        <button class="final-btn bg-love hover:bg-love/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">当然啦 👍</button>
+        <button class="final-btn bg-love hover:bg-love/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">好呀 😊</button>
+        <button class="final-btn bg-love hover:bg-love/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">我爱你 ❤️</button>
+        <button class="final-btn bg-love hover:bg-love/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">好呀 😊</button>
+        <button class="final-btn bg-love hover:bg-love/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">当然啦 👍</button>
+        <button class="final-btn bg-love hover:bg-love/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">当然啦 👍</button>
+        <button class="final-btn bg-love hover:bg-love/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">我愿意 ❤️</button>
+        <button class="final-btn bg-love hover:bg-love/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">我也是</button>
+        <button class="final-btn bg-love hover:bg-love/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">当然啦 👍</button>
+      </div>
+    </div>
 
-    <script>
-        // 1. 创建飘落的心形背景
-        function createHearts() {
-            const heartsContainer = document.getElementById('hearts');
-            const heartCount = 50;
+    <!-- 信封弹窗 - 默认隐藏 -->
+    <div id="envelope-popup" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col items-center justify-center p-4">
+      <h3 class="text-2xl font-bold text-white mb-8 text-shadow text-center px-4">我有一份特别的信要给你</h3>
+      <div class="envelope-scene">
+        <div class="envelope-wrapper" id="envelope-wrapper">
+          <div class="envelope-flap"></div>
+          <div class="envelope-seal">
+            <i class="fa fa-heart text-2xl"></i>
+          </div>
+          <div class="envelope">
+            <div class="envelope-front">
+              <i class="fa fa-envelope text-4xl text-love mb-2"></i>
+              <p class="text-gray-700 font-medium">点击开启</p>
+            </div>
+            <div class="envelope-back">
+              <p class="envelope-text">亲爱的，<br>从遇见你的那一刻起，<br>我就知道你是我要找的人。<br>往后余生，请多指教。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            for (let i = 0; i < heartCount; i++) {
-                const heart = document.createElement('div');
-                heart.innerHTML = '❤';
-                heart.classList.add('heart');
+    <!-- 跳转提示 - 默认隐藏 -->
+    <div id="redirect-message" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center transform transition-all scale-100 shadow-2xl border border-pink-100">
+        <div class="text-6xl text-love mb-4 heart-beat">
+          <i class="fa fa-heart"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">回忆之旅即将开始</h2>
+        <p class="text-gray-600 mb-6">让我们一起创造更多美好时光</p>
+        <button id="redirect-btn" class="bg-love hover:bg-love/90 text-white font-bold py-3 px-8 rounded-full text-lg transition-all duration-300 hover:scale-105">
+          开始 <i class="fa fa-arrow-right ml-1"></i>
+        </button>
+      </div>
+    </div>
+  </div>
 
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
-                heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
-                heart.style.opacity = Math.random() * 0.5 + 0.3;
-                heart.style.animationDelay = Math.random() * 5 + 's';
+  <script>
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', function() {
+      createStars();
+      startMeteorShower();
+      bindEvents();
+    });
 
-                heartsContainer.appendChild(heart);
-            }
+    // 创建星空背景（增强版）
+    function createStars() {
+      const container = document.getElementById('stars-container');
+      const starCount = 200; // 增加星星数量
+
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.innerHTML = '<i class="fa fa-star"></i>';
+
+        // 随机星星属性
+        const size = 2 + Math.floor(Math.random() * 10);
+        const opacity = 0.3 + Math.random() * 0.7;
+        const isBlue = Math.random() > 0.7;
+        const delay = Math.random() * 5; // 随机动画延迟
+        const floatDuration = 5 + Math.random() * 15; // 随机漂浮时间
+
+        star.className = 'absolute star-twinkle star-float';
+        star.style.color = isBlue ? '#93c5fd' : '#ffffff';
+        star.style.fontSize = `${size}px`;
+        star.style.opacity = opacity;
+        star.style.animationDelay = `${delay}s`;
+        star.style.animationDuration = `${floatDuration}s`;
+
+        // 随机位置
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        star.style.left = `${x}%`;
+        star.style.top = `${y}%`;
+
+        container.appendChild(star);
+      }
+    }
+
+    // 创建流星（增强版）
+    function createMeteor() {
+      const container = document.getElementById('meteors-container');
+      if (!container) return;
+
+      const meteor = document.createElement('div');
+      meteor.className = 'meteor';
+
+      // 随机流星参数
+      const angle = 15 + Math.random() * 45; // 15-60度的飞行角度
+      const speed = 1.5 + Math.random() * 2; // 更快的流星速度
+      const trailLength = 100 + Math.random() * 300; // 更长的拖尾
+      const starSize = 14 + Math.random() * 8; // 更大的流星头部
+      const isPink = Math.random() > 0.7; // 增加粉色流星
+
+      // 创建拖尾
+      const trail = document.createElement('div');
+      trail.className = 'meteor-trail';
+      trail.style.width = '2px';
+      trail.style.height = `${trailLength}px`;
+      trail.style.transform = `rotate(${angle}deg)`;
+
+      // 粉色流星特殊样式
+      if (isPink) {
+        trail.style.background = 'linear-gradient(to right, rgba(236, 72, 153, 0.8) 0%, rgba(249, 115, 22, 0.6) 20%, rgba(249, 115, 22, 0.4) 40%, rgba(249, 115, 22, 0.2) 60%, rgba(249, 115, 22, 0.1) 80%, rgba(249, 115, 22, 0) 100%)';
+        trail.style.boxShadow = '0 0 12px 2px rgba(236, 72, 153, 0.3)';
+      }
+
+      // 创建星星（流星头部）
+      const star = document.createElement('div');
+      star.className = 'meteor-star';
+      star.innerHTML = '<i class="fa fa-star"></i>';
+      star.style.fontSize = `${starSize}px`;
+      star.style.left = '0px';
+      star.style.top = '0px';
+      if (isPink) {
+        star.style.color = '#ec4899';
+      }
+
+      // 组合流星元素
+      meteor.appendChild(trail);
+      meteor.appendChild(star);
+
+      // 随机起始位置（可能从左、上或右上）
+      const startPositions = [
+        {x: -200 - Math.random() * 300, y: -100 + Math.random() * 200}, // 左上
+        {x: window.innerWidth + 200, y: -100 + Math.random() * 200}, // 右上
+        {x: -200 + Math.random() * window.innerWidth, y: -200} // 顶部
+      ];
+      const startPos = startPositions[Math.floor(Math.random() * startPositions.length)];
+      meteor.style.left = `${startPos.x}px`;
+      meteor.style.top = `${startPos.y}px`;
+
+      // 计算飞行角度和距离
+      const radians = angle * (Math.PI / 180);
+      const distanceX = Math.cos(radians) * (window.innerWidth + 800);
+      const distanceY = Math.sin(radians) * (window.innerHeight + 800);
+
+      // 应用动画
+      meteor.style.transition = `transform ${speed}s cubic-bezier(0.2, 0.1, 0.3, 1) forwards`;
+      setTimeout(() => {
+        meteor.style.transform = `translate(${distanceX}px, ${distanceY}px)`;
+      }, 10);
+
+      // 添加到容器
+      container.appendChild(meteor);
+
+      // 动画结束后移除
+      setTimeout(() => {
+        if (meteor && meteor.parentNode) {
+          meteor.parentNode.removeChild(meteor);
+        }
+      }, speed * 1000);
+    }
+
+    // 流星雨（增强版）
+    function startMeteorShower() {
+      // 初始生成更多流星
+      for (let i = 0; i < 5; i++) {
+        setTimeout(createMeteor, i * 1000);
+      }
+
+      // 更频繁地生成流星
+      setInterval(() => {
+        const randomDelay = Math.random() * 2000 + 500;
+        setTimeout(createMeteor, randomDelay);
+      }, 1500);
+    }
+
+    // 绑定交互事件（保持原有逻辑）
+    function bindEvents() {
+      let stage1Attempts = 0;
+      const MAX_STAGE1_ATTEMPTS = 5;
+
+      let stage2Attempts = 0;
+      const MAX_STAGE2_ATTEMPTS = 5;
+
+      const targetUrl = "start.html";
+      const anotherVersionUrl = "baobao.html";
+
+      // 获取DOM元素
+      const stage1 = document.getElementById('stage1');
+      const stage2 = document.getElementById('stage2');
+      const finalStage = document.getElementById('final-stage');
+      const envelopePopup = document.getElementById('envelope-popup');
+      const envelopeWrapper = document.getElementById('envelope-wrapper');
+      const redirectMessage = document.getElementById('redirect-message');
+      const redirectBtn = document.getElementById('redirect-btn');
+      const anotherVersion = document.getElementById('another-version');
+
+      // 显示信封弹窗
+      function showEnvelope() {
+        // 隐藏所有阶段
+        document.querySelectorAll('div[id^="stage"]').forEach(stage => {
+          stage.classList.add('hidden');
+        });
+        envelopePopup.classList.remove('hidden');
+      }
+
+      // 第一阶段：初始表白
+      const stage1Yes = document.getElementById('stage1-yes');
+      const stage1No = document.getElementById('stage1-no');
+
+      // 点击"愿意"直接显示信封
+      stage1Yes.addEventListener('click', showEnvelope);
+
+      // "不愿意"按钮躲避逻辑
+      stage1No.addEventListener('mouseover', () => {
+        stage1Attempts++;
+
+        // 达到最大尝试次数，进入第二阶段
+        if (stage1Attempts >= MAX_STAGE1_ATTEMPTS) {
+          stage1.classList.add('opacity-0', 'scale-95');
+          setTimeout(() => {
+            stage1.classList.add('hidden');
+            stage2.classList.remove('hidden');
+          }, 300);
+          return;
         }
 
-        // 2. 时间计数器逻辑
-        function initDigitContainers() {
-            createDigitElements('days', 3);    // 最多3位天数
-            createDigitElements('hours', 2);   // 最多2位小时
-            createDigitElements('minutes', 2); // 最多2位分钟
-            createDigitElements('seconds', 2); // 最多2位秒数
+        // 计算随机位置让按钮"躲避"
+        const container = stage1.getBoundingClientRect();
+        const btnWidth = stage1No.offsetWidth;
+        const btnHeight = stage1No.offsetHeight;
+
+        const maxX = container.width - btnWidth - 20;
+        const maxY = container.height - btnHeight - 20;
+
+        // 确保按钮不会超出容器范围
+        const randomX = Math.floor(Math.random() * maxX);
+        const randomY = Math.floor(Math.random() * maxY);
+
+        stage1No.style.position = 'relative';
+        stage1No.style.left = `${randomX}px`;
+        stage1No.style.top = `${randomY}px`;
+      });
+
+      // 第二阶段：周围都是同意按钮
+      document.querySelectorAll('.stage2-yes').forEach(btn => {
+        btn.addEventListener('click', showEnvelope);
+      });
+
+      // 第二阶段的"不愿意"按钮
+      const stage2No = document.getElementById('stage2-no');
+      stage2No.addEventListener('mouseover', () => {
+        stage2Attempts++;
+
+        if (stage2Attempts >= MAX_STAGE2_ATTEMPTS) {
+          stage2.classList.add('opacity-0', 'scale-95');
+          setTimeout(() => {
+            stage2.classList.add('hidden');
+            finalStage.classList.remove('hidden');
+            // 显示另一版入口
+            anotherVersion.classList.add('visible');
+          }, 300);
+          return;
         }
 
-        function createDigitElements(unit, digitCount) {
-            const container = document.getElementById(`${unit}-container`);
-            container.innerHTML = '';
+        // 让按钮在更大范围内移动
+        const container = stage2.querySelector('.relative');
+        const rect = container.getBoundingClientRect();
+        const btnWidth = stage2No.offsetWidth;
+        const btnHeight = stage2No.offsetHeight;
 
-            for (let i = 0; i < digitCount; i++) {
-                const digitFlip = document.createElement('div');
-                digitFlip.className = 'digit-flip';
-                digitFlip.dataset.digitIndex = i;
+        const maxX = rect.width - btnWidth - 40;
+        const maxY = rect.height - btnHeight - 40;
 
-                const digit = document.createElement('div');
-                digit.className = 'digit';
-                digit.textContent = '0';
+        const randomX = Math.floor(Math.random() * maxX) - (maxX / 2);
+        const randomY = Math.floor(Math.random() * maxY) - (maxY / 2);
 
-                digitFlip.appendChild(digit);
-                container.appendChild(digitFlip);
-            }
+        stage2No.style.transform = `translate(${randomX}px, ${randomY}px)`;
+      });
+
+      // 最终阶段所有按钮都显示信封
+      document.querySelectorAll('.final-btn').forEach(btn => {
+        btn.addEventListener('click', showEnvelope);
+      });
+
+      // 信封点击事件
+      envelopeWrapper.addEventListener('click', function() {
+        this.classList.toggle('envelope-opened');
+
+        // 打开后延迟显示跳转提示
+        if (this.classList.contains('envelope-opened')) {
+          setTimeout(() => {
+            envelopePopup.classList.add('hidden');
+            redirectMessage.classList.remove('hidden');
+          }, 2000);
         }
+      });
 
-        function flipSingleDigit(containerId, digitIndex, newValue) {
-            const container = document.getElementById(containerId);
-            const digitFlips = container.getElementsByClassName('digit-flip');
+      // 跳转按钮
+      redirectBtn.addEventListener('click', function() {
+        window.location.href = targetUrl;
+      });
 
-            if (digitIndex >= digitFlips.length) return;
-
-            const digitFlip = digitFlips[digitIndex];
-            const currentDigit = digitFlip.querySelector('.digit');
-            const oldValue = parseInt(currentDigit.textContent);
-
-            if (oldValue === newValue) return;
-
-            const newDigit = document.createElement('div');
-            newDigit.className = 'digit';
-            newDigit.textContent = newValue;
-            newDigit.style.transform = 'translateY(100%)';
-
-            digitFlip.appendChild(newDigit);
-
-            setTimeout(() => {
-                currentDigit.style.transform = 'translateY(-100%)';
-                newDigit.style.transform = 'translateY(0)';
-            }, 50);
-
-            setTimeout(() => {
-                if (digitFlip.contains(currentDigit)) {
-                    digitFlip.removeChild(currentDigit);
-                }
-            }, 500);
-        }
-
-        function updateUnitDigits(unit, value) {
-            const container = document.getElementById(`${unit}-container`);
-            const digitCount = container.getElementsByClassName('digit-flip').length;
-            const valueStr = value.toString().padStart(digitCount, '0');
-
-            for (let i = 0; i < digitCount; i++) {
-                const digit = parseInt(valueStr[i]);
-                flipSingleDigit(`${unit}-container`, i, digit);
-            }
-        }
-
-        function updateTimeElapsed() {
-            // 替换为你们的相遇日期（格式：年-月-日T时:分:秒）
-            const importantDate = new Date('2025-08-12T17:13:00');
-            const now = new Date();
-            const diff = now - importantDate;
-
-            if (diff <= 0) {
-                updateUnitDigits('days', 0);
-                updateUnitDigits('hours', 0);
-                updateUnitDigits('minutes', 0);
-                updateUnitDigits('seconds', 0);
-                return;
-            }
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-            updateUnitDigits('days', days);
-            updateUnitDigits('hours', hours);
-            updateUnitDigits('minutes', minutes);
-            updateUnitDigits('seconds', seconds);
-        }
-
-        // 3. 歌曲播放逻辑（含初始封面图设置）
-        function initAudioPlayer() {
-            const audio = document.getElementById('audio-player');
-            const playPauseBtn = document.getElementById('play-pause-btn');
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            const volumeSlider = document.getElementById('volume-slider');
-            const volumeIcon = document.getElementById('volume-icon');
-            const nowPlayingTitle = document.getElementById('now-playing-title');
-            const nowPlayingSinger = document.getElementById('now-playing-singer');
-            const songCards = document.querySelectorAll('.song-card');
-            const nowPlayingCover = document.getElementById('now-playing-cover'); // 封面容器
-            const coverIcon = document.getElementById('cover-icon'); // 封面图标
-            const tabBtns = document.querySelectorAll('.tab-btn');
-
-            let currentSongIndex = -1;
-            let currentTab = 'her-songs';
-            let songList = [];
-
-            // 更新歌曲列表（按标签筛选）
-            function updateSongList(tab) {
-                currentTab = tab;
-                songList = Array.from(songCards).filter(card => card.dataset.tab === tab);
-            }
-            updateSongList('her-songs');
-
-            // 标签切换逻辑
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    tabBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    updateSongList(btn.dataset.tab);
-                    if (currentSongIndex !== -1 && !songList[currentSongIndex]) {
-                        resetPlayerState();
-                    }
-                });
-            });
-
-            // 【核心函数】设置播放器封面图
-            function setPlayerCover(coverUrl) {
-                if (coverUrl) {
-                    // 播放歌曲时：显示歌曲专属封面
-                    nowPlayingCover.style.backgroundImage = `url('${coverUrl}')`;
-                    coverIcon.style.opacity = 0; // 隐藏图标
-                } else {
-                    // 初始/重置时：显示默认封面图（与CSS中默认图一致）
-                    nowPlayingCover.style.backgroundImage = `url('default.png')`;
-                    coverIcon.style.opacity = 0; // 保持图标隐藏
-                }
-            }
-
-            // 播放指定歌曲
-            function playSong(index) {
-                if (index < 0 || index >= songList.length) return;
-
-                // 移除之前的播放状态
-                if (currentSongIndex !== -1) {
-                    songCards.forEach(card => card.classList.remove('playing'));
-                }
-
-                currentSongIndex = index;
-                const currentSong = songList[currentSongIndex];
-
-                // 1. 更新音频和歌曲信息
-                audio.src = currentSong.dataset.src;
-                nowPlayingTitle.textContent = currentSong.dataset.title;
-                nowPlayingSinger.textContent = currentSong.dataset.singer;
-
-                // 2. 更新封面图（读取歌曲的data-cover属性）
-                const songCover = currentSong.dataset.cover;
-                setPlayerCover(songCover);
-
-                // 3. 标记当前播放歌曲并播放
-                currentSong.classList.add('playing');
-                audio.play().then(() => {
-                    updatePlayPauseIcon();
-                }).catch(err => {
-                    console.error('播放失败：', err);
-                    alert('歌曲播放失败，请检查音频文件路径是否正确');
-                });
-            }
-
-            // 重置播放器状态
-            function resetPlayerState() {
-                audio.pause();
-                audio.src = '';
-                currentSongIndex = -1;
-                songCards.forEach(card => card.classList.remove('playing'));
-                nowPlayingTitle.textContent = '未选择歌曲';
-                nowPlayingSinger.textContent = '点击歌曲开始播放';
-                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-                // 重置为默认封面图
-                setPlayerCover(null);
-            }
-
-            // 更新播放/暂停图标
-            function updatePlayPauseIcon() {
-                playPauseBtn.innerHTML = audio.paused
-                    ? '<i class="fas fa-play"></i>'
-                    : '<i class="fas fa-pause"></i>';
-            }
-
-            // 播放/暂停按钮点击事件
-            playPauseBtn.addEventListener('click', () => {
-                if (audio.src === '') {
-                    songList.length > 0 ? playSong(0) : alert('当前分类没有歌曲');
-                } else {
-                    audio.paused ? audio.play() : audio.pause();
-                    updatePlayPauseIcon();
-                }
-            });
-
-            // 上一首/下一首按钮事件
-            prevBtn.addEventListener('click', () => {
-                if (songList.length === 0) return;
-                const newIndex = (currentSongIndex - 1 + songList.length) % songList.length;
-                playSong(newIndex);
-            });
-            nextBtn.addEventListener('click', () => {
-                if (songList.length === 0) return;
-                const newIndex = (currentSongIndex + 1) % songList.length;
-                playSong(newIndex);
-            });
-
-            // 歌曲卡片点击事件
-            songCards.forEach((card) => {
-                card.addEventListener('click', () => {
-                    const tab = card.dataset.tab;
-                    // 切换到歌曲所属标签
-                    document.querySelectorAll('.tab-btn').forEach(btn => {
-                        if (btn.dataset.tab === tab) {
-                            btn.click();
-                        }
-                    });
-                    // 播放当前点击的歌曲
-                    const songIndex = songList.findIndex(song => song.dataset.src === card.dataset.src);
-                    playSong(songIndex);
-                });
-            });
-
-            // 音量控制逻辑
-            volumeSlider.addEventListener('input', () => {
-                audio.volume = volumeSlider.value;
-                volumeIcon.className = audio.volume === 0
-                    ? 'fas fa-volume-mute'
-                    : (audio.volume < 0.5 ? 'fas fa-volume-down' : 'fas fa-volume-up');
-            });
-
-            // 歌曲播放结束自动下一首
-            audio.addEventListener('ended', () => {
-                if (songList.length === 0) return;
-                const newIndex = (currentSongIndex + 1) % songList.length;
-                playSong(newIndex);
-            });
-
-            // 页面初始化时设置默认封面
-            setPlayerCover(null);
-        }
-
-        // 4. 歌曲分类标签切换
-        function initTabs() {
-            const tabBtns = document.querySelectorAll('.tab-btn');
-            const songCards = document.querySelectorAll('.song-card');
-
-            tabBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    tabBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-
-                    const targetTab = btn.dataset.tab;
-                    songCards.forEach(card => {
-                        card.style.display = card.dataset.tab === targetTab ? 'block' : 'none';
-                    });
-                });
-            });
-
-            // 初始隐藏"我唱的歌"
-            songCards.forEach(card => {
-                if (card.dataset.tab === 'my-songs') {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
-        // 5. 新增：角色信息弹窗逻辑
-        function initCharacterModal() {
-            // 角色数据（包含图片、标题、副标题、故事内容）
-            const characterData = {
-                ran: {
-                    avatar: 'wife.jpg',
-                    title: '毛利兰',
-                    subtitle: '我的小鹿，温柔与勇气的化身',
-                    body: `
-                        <p>你就像毛利兰一样，既有温柔似水的性格，又有坚定勇敢的内心。每次看到你为我着想的样子，就像小兰守护新一那样，让我充满安全感。</p>
-                        <p>你会记得我喜欢的口味，会在我疲惫时递上一杯温水，会在我迷茫时给我鼓励——这些细节就像小兰默默等待新一那样，充满了深情与执着。</p>
-                        <p>和你在一起的每一天，都像漫画里的甜蜜片段：一起逛超市时的打闹，一起看电影时的依偎，一起做饭时的笨拙互动，都成为了我心中最珍贵的回忆。</p>
-                    `,
-                    footer: '—— 永远被你守护的小鱼'
-                },
-                shinichi: {
-                    avatar: 'me.jpg',
-                    title: '工藤新一',
-                    subtitle: '为你变成更好的我',
-                    body: `
-                        <p>我愿像工藤新一一样，为你变成更优秀的人。新一为了保护小兰不断追寻真相，而我为了给你更好的生活，也在努力成为更可靠的伴侣。</p>
-                        <p>虽然我没有新一的侦探能力，但我会用我的方式守护你：记住你的喜好，包容你的小脾气，陪你做你喜欢的事，在你需要时永远第一时间出现。</p>
-                        <p>就像新一对小兰的承诺那样，我也想对你说："不管遇到什么困难，我都会陪在你身边，一起面对未来的每一个挑战。"</p>
-                    `,
-                    footer: '—— 只想守护你的小鱼'
-                },
-                judy: {
-                    avatar: 'me2.jpg',
-                    title: '朱迪-霍普斯',
-                    subtitle: '为你勇敢追梦的决心',
-                    body: `
-                        <p>朱迪从一只小镇兔子，凭借坚持成为了动物城的优秀警官——这就像我对你的心意：为了和你一起实现未来的梦想，我愿意像朱迪一样勇敢无畏。</p>
-                        <p>我曾经像朱迪初到动物城时那样迷茫，但遇到你之后，我找到了前进的方向。你的支持就像尼克对朱迪的鼓励，让我有勇气面对各种挑战。</p>
-                        <p>我想和你一起，像朱迪和尼克那样，打破所有"不可能"：一起去旅行看世界，一起打造属于我们的小窝，一起把平凡的日子过成诗。</p>
-                    `,
-                    footer: '—— 为你勇敢的小鱼'
-                },
-                nick: {
-                    avatar: 'wife2.jpg',
-                    title: '尼克-王尔德',
-                    subtitle: '被你温暖的"小狐狸"',
-                    body: `
-                        <p>尼克曾经是只封闭内心的狐狸，直到遇到朱迪才敞开心扉——而你就像朱迪改变尼克那样，温暖了我的生活，让我变得更开朗、更懂得爱。</p>
-                        <p>你有尼克的机智幽默，总能在我不开心时用笑话逗我笑；你也有尼克的温柔细心，会在我忙碌时默默打理好家里的一切，让我无后顾之忧。</p>
-                        <p>就像尼克最终选择和朱迪并肩作战那样，我也想和你一起：一起面对生活的酸甜苦辣，一起创造更多专属我们的回忆，一起走到时间的尽头。</p>
-                    `,
-                    footer: '—— 被你温暖的小鱼'
-                }
-            };
-
-            const modal = document.getElementById('characterModal');
-            const modalAvatar = document.getElementById('modalAvatar');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalSubtitle = document.getElementById('modalSubtitle');
-            const modalBody = document.getElementById('modalBody');
-            const modalFooter = document.getElementById('modalFooter');
-            const modalClose = document.getElementById('modalClose');
-            const photoItems = document.querySelectorAll('.photo-item');
-
-            // 点击图片打开对应角色弹窗
-            photoItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    // 阻止事件冒泡（避免同时触发图片画廊的hover效果冲突）
-                    e.stopPropagation();
-                    const characterKey = item.dataset.character;
-                    const character = characterData[characterKey];
-
-                    if (character) {
-                        // 填充角色数据到弹窗
-                        modalAvatar.src = character.avatar;
-                        modalAvatar.alt = character.title;
-                        modalTitle.textContent = character.title;
-                        modalSubtitle.textContent = character.subtitle;
-                        modalBody.innerHTML = character.body;
-                        modalFooter.textContent = character.footer;
-
-                        // 显示弹窗
-                        modal.classList.add('active');
-                        // 禁止页面滚动
-                        document.body.style.overflow = 'hidden';
-                    }
-                });
-            });
-
-            // 关闭弹窗
-            function closeModal() {
-                modal.classList.remove('active');
-                // 恢复页面滚动
-                document.body.style.overflow = '';
-            }
-
-            // 点击关闭按钮关闭弹窗
-            modalClose.addEventListener('click', closeModal);
-
-            // 点击弹窗外部关闭弹窗
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
-
-            // 按ESC键关闭弹窗
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && modal.classList.contains('active')) {
-                    closeModal();
-                }
-            });
-        }
-
-        // 页面加载初始化（新增角色弹窗初始化）
-        window.onload = function() {
-            createHearts();
-            initDigitContainers();
-            updateTimeElapsed();
-            setInterval(updateTimeElapsed, 1000);
-            initTabs();
-            initAudioPlayer();
-            initCharacterModal(); // 初始化角色弹窗
-        };
-    </script>
+      // 另一版入口
+      anotherVersion.addEventListener('click', function() {
+        window.location.href = anotherVersionUrl;
+      });
+    }
+  </script>
 </body>
 </html>

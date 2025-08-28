@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>林间奇遇</title>
+  <!-- 引入Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- 引入Font Awesome -->
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            forest: '#2d6a4f',
+            autumn: '#e97451',
+            water: '#3a86ff',
+            earth: '#8b5a2b'
+          },
+        }
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .text-shadow {
+        text-shadow: 0 2px 10px rgba(45, 106, 79, 0.3);
+      }
+      .float {
+        animation: float 3s ease-in-out infinite;
+      }
+      .sway {
+        animation: sway 4s ease-in-out infinite;
+      }
+      .ripple {
+        animation: ripple 6s infinite;
+      }
+      /* 背景层位移动画 */
+      .bg-move-slow {
+        animation: bgMoveSlow 25s linear infinite alternate;
+      }
+      .bg-move-medium {
+        animation: bgMoveMedium 18s linear infinite alternate-reverse;
+      }
+      .bg-move-fast {
+        animation: bgMoveFast 12s linear infinite alternate;
+      }
+      /* 光影流动效果 */
+      .light-flow {
+        animation: lightFlow 8s ease-in-out infinite;
+      }
+    }
+
+    /* 核心动画定义 */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes sway {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+    }
+
+    @keyframes ripple {
+      0% { transform: scale(0.95); opacity: 0.7; }
+      50% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.7; }
+    }
+
+    /* 背景层缓慢位移（营造景深） */
+    @keyframes bgMoveSlow {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-15px, -10px); }
+    }
+    @keyframes bgMoveMedium {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(20px, 15px); }
+    }
+    @keyframes bgMoveFast {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-10px, 20px); }
+    }
+
+    /* 光影流动（模拟阳光穿透树叶） */
+    @keyframes lightFlow {
+      0%, 100% {
+        box-shadow: 0 0 25px rgba(255, 240, 165, 0.2),
+                    0 0 40px rgba(129, 199, 132, 0.15);
+      }
+      50% {
+        box-shadow: 0 0 35px rgba(255, 240, 165, 0.35),
+                    0 0 50px rgba(129, 199, 132, 0.25);
+      }
+    }
+
+    /* 落叶特效（优化：增加随机轨迹偏移） */
+    @keyframes fall {
+      0% {
+        transform: translate(0, -10px) rotate(0deg);
+        opacity: 0.8;
+      }
+      25% {
+        transform: translate(calc(20px * var(--random-x)), calc(25vh)) rotate(calc(90deg * var(--random-rot)));
+      }
+      50% {
+        transform: translate(calc(-20px * var(--random-x)), calc(50vh)) rotate(calc(180deg * var(--random-rot)));
+      }
+      75% {
+        transform: translate(calc(15px * var(--random-x)), calc(75vh)) rotate(calc(270deg * var(--random-rot)));
+      }
+      100% {
+        transform: translate(calc(50px + 50px * var(--random-x)), 100vh) rotate(calc(360deg * var(--random-rot)));
+        opacity: 0.4;
+      }
+    }
+
+    .leaf {
+      position: absolute;
+      pointer-events: none;
+      z-index: 1;
+      color: #e97451;
+      opacity: 0.7;
+      --random-x: 0; /* 随机水平偏移变量 */
+      --random-rot: 1; /* 随机旋转变量 */
+      --fall-duration: 10s; /* 下落持续时间变量 */
+      animation: fall var(--fall-duration) ease-in-out forwards;
+    }
+
+    /* 水滴特效（优化：增加下落角度随机） */
+    @keyframes drop {
+      0% {
+        transform: translate(calc(var(--drop-x) * 1px), -50px) scale(0.8) rotate(var(--drop-rot));
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translate(calc(var(--drop-x) * 1px), 100vh) scale(0.8) rotate(var(--drop-rot));
+        opacity: 0;
+      }
+    }
+
+    .droplet {
+      position: absolute;
+      pointer-events: none;
+      z-index: 1;
+      color: #3a86ff;
+      --drop-x: 0; /* 水滴水平偏移 */
+      --drop-rot: 0deg; /* 水滴旋转 */
+    }
+
+    /* 卷轴样式 */
+    .scroll-scene {
+      perspective: 1000px;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .scroll-wrapper {
+      position: relative;
+      width: 80%;
+      max-width: 300px;
+      height: 400px;
+      cursor: pointer;
+    }
+
+    .scroll {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+
+    .scroll-opened .scroll {
+      transform: rotateY(180deg);
+    }
+
+    .scroll-front, .scroll-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      background-color: #f5ebe0;
+      border: 2px solid #8b5a2b;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .scroll-back {
+      transform: rotateY(180deg);
+      padding: 30px 20px;
+      overflow-y: auto;
+    }
+
+    .scroll-ribbon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 80%;
+      height: 6px;
+      background-color: #e63946;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s;
+      z-index: 2;
+      border-radius: 3px;
+    }
+
+    .scroll-opened .scroll-ribbon {
+      opacity: 0;
+      transform: translate(-50%, -50%) rotate(-45deg) scale(0);
+    }
+
+    .scroll-text {
+      color: #332c39;
+      font-weight: 500;
+      font-size: 16px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* 另一版入口样式 */
+    .another-version {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      background-color: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.5s ease;
+    }
+
+    .another-version.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .another-version:hover {
+      color: white;
+      background-color: rgba(0, 0, 0, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* 多层背景容器（营造景深） */
+    .bg-layers {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .bg-layer {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.2; /* 透明叠加，避免遮挡前景 */
+    }
+  </style>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-forest/90 via-earth/80 to-forest/90 flex items-center justify-center p-4 font-sans overflow-x-hidden relative light-flow">
+
+  <!-- 树叶背景 -->
+  <div id="leaves-container" class="fixed inset-0 pointer-events-none z-0"></div>
+
+  <!-- 水滴背景 -->
+  <div id="droplets-container" class="fixed inset-0 pointer-events-none z-0"></div>
+
+  <!-- 另一版入口（默认隐藏） -->
+  <div class="another-version" id="another-version">
+    另一处风景
+  </div>
+
+  <div class="max-w-4xl w-full mx-auto relative z-10">
+    <!-- 初始问题界面 - 默认显示 -->
+    <div id="stage1" class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-8 text-center transition-all duration-500 transform border border-amber-100 light-flow">
+      <h1 class="text-[clamp(1.5rem,4vw,2.2rem)] font-bold text-forest mb-6 text-shadow">发现一片神秘森林</h1>
+      <p class="text-[clamp(1.1rem,3vw,1.5rem)] text-gray-700 mb-10">你想一同探索这片自然秘境吗？</p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button id="stage1-yes" class="bg-forest hover:bg-forest/90 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg transform transition-all duration-300 hover:scale-105 float">
+          当然想 <i class="fa fa-leaf ml-1"></i>
+        </button>
+        <button id="stage1-no" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-8 rounded-full text-lg shadow transition-all duration-300">
+          再考虑下 <i class="fa fa-pause ml-1"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- 第二阶段：包围的按钮 - 默认隐藏 -->
+    <div id="stage2" class="hidden bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-8 text-center border border-amber-100 light-flow">
+      <h2 class="text-xl font-bold text-forest mb-6 text-shadow">这里有很多奇妙生物哦</h2>
+      <p class="text-gray-600 mb-8">有灵动的梅花鹿和欢快的小鱼...</p>
+
+      <div class="relative h-60 flex items-center justify-center mb-4">
+        <button class="stage2-yes absolute bg-forest hover:bg-forest/90 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 hover:scale-105" style="top: 10%; left: 50%; transform: translateX(-50%);">
+          去看看 <i class="fa fa-deer ml-1"></i>
+        </button>
+        <button class="stage2-yes absolute bg-water hover:bg-water/90 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 hover:scale-105" style="bottom: 10%; left: 50%; transform: translateX(-50%);">
+          探索水域 <i class="fa fa-fish ml-1"></i>
+        </button>
+        <button class="stage2-yes absolute bg-autumn hover:bg-autumn/90 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 hover:scale-105" style="top: 50%; left: 10%; transform: translateY(-50%);">
+          穿越梧桐林 <i class="fa fa-tree ml-1"></i>
+        </button>
+        <button class="stage2-yes absolute bg-earth hover:bg-earth/90 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 hover:scale-105" style="top: 50%; right: 10%; transform: translateY(-50%);">
+          开始冒险 <i class="fa fa-compass ml-1"></i>
+        </button>
+
+        <button id="stage2-no" class="bg-gray-300 text-gray-800 font-bold py-3 px-8 rounded-full text-lg shadow transition-all duration-500 transform">
+          还是算了 <i class="fa fa-times ml-1"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- 最终阶段：多个探索按钮 - 默认隐藏 -->
+    <div id="final-stage" class="hidden flex flex-col items-center justify-center w-full h-full light-flow">
+      <h2 class="text-2xl font-bold text-white mb-2 text-shadow">前方有更多惊喜等待发现</h2>
+      <p class="text-gray-200 mb-4">选择一种方式开始你的旅程吧~</p>
+      <div id="button-container" class="flex flex-wrap justify-center gap-4">
+        <button class="final-btn bg-forest hover:bg-forest/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">遇见梅花鹿 🦌</button>
+        <button class="final-btn bg-water hover:bg-water/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">与小鱼共游 🐟</button>
+        <button class="final-btn bg-autumn hover:bg-autumn/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">漫步梧桐林 🍂</button>
+        <button class="final-btn bg-forest hover:bg-forest/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">开始探险 🌿</button>
+        <button class="final-btn bg-earth hover:bg-earth/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">深入森林 🌳</button>
+        <button class="final-btn bg-water hover:bg-water/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">寻找溪流 💧</button>
+        <button class="final-btn bg-autumn hover:bg-autumn/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">收集落叶 🍁</button>
+        <button class="final-btn bg-forest hover:bg-forest/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">遇见梅花鹿 🦌</button>
+        <button class="final-btn bg-earth hover:bg-earth/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">森林漫步 🌲</button>
+        <button class="final-btn bg-water hover:bg-water/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">与小鱼共游 🐟</button>
+        <button class="final-btn bg-autumn hover:bg-autumn/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">梧桐落叶 🍂</button>
+        <button class="final-btn bg-forest hover:bg-forest/90 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">开始探险 🌿</button>
+      </div>
+    </div>
+
+    <!-- 卷轴弹窗 - 默认隐藏 -->
+    <div id="scroll-popup" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col items-center justify-center p-4 light-flow">
+      <h3 class="text-2xl font-bold text-white mb-8 text-shadow text-center px-4">发现一张古老的地图</h3>
+      <div class="scroll-scene">
+        <div class="scroll-wrapper" id="scroll-wrapper">
+          <div class="scroll-ribbon"></div>
+          <div class="scroll">
+            <div class="scroll-front">
+              <i class="fa fa-map text-4xl mb-4 text-earth"></i>
+              <p class="text-earth font-medium bg-amber-100/70 px-3 py-1 rounded">揭开森林的秘密</p>
+            </div>
+            <div class="scroll-back">
+              <p class="scroll-text">神秘森林指南：<br><br>
+              向东穿过梧桐林，你会遇见优雅的梅花鹿家族，它们喜欢清晨的阳光。<br><br>
+              沿着小溪前行，清澈的水中有色彩斑斓的小鱼，它们会指引你找到隐藏的瀑布。<br><br>
+              日落时分，梧桐树的叶子会发出柔和的光芒，照亮回家的路。<br><br>
+              记住，保持好奇心，但也要尊重自然的法则。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 跳转提示 - 默认隐藏 -->
+    <div id="redirect-message" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 light-flow">
+      <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center transform transition-all scale-100 shadow-2xl border border-amber-100">
+        <div class="text-6xl text-forest mb-4 float">
+          <i class="fa fa-tree"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-forest mb-4">森林探险即将开始</h2>
+        <p class="text-gray-600 mb-6">准备好探索这片神秘的自然世界了吗？</p>
+        <button id="redirect-btn" class="bg-forest hover:bg-forest/90 text-white font-bold py-3 px-8 rounded-full text-lg transition-all duration-300 hover:scale-105">
+          出发 <i class="fa fa-arrow-right ml-1"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', function() {
+      createLeaves();
+      startRain();
+      bindEvents();
+      // 3秒后显示"另一处风景"按钮
+      setTimeout(() => {
+        document.getElementById('another-version').classList.add('visible');
+      }, 3000);
+    });
+
+    // 创建落叶
+    function createLeaves() {
+      const container = document.getElementById('leaves-container');
+      const leafCount = 80;
+
+      for (let i = 0; i < leafCount; i++) {
+        setTimeout(() => {
+          createFallingLeaf();
+        }, i * 200);
+      }
+
+      // 持续生成新的落叶
+      setInterval(createFallingLeaf, 3000);
+    }
+
+    // 创建飘落的树叶
+    function createFallingLeaf() {
+      const container = document.getElementById('leaves-container');
+      if (!container) return;
+
+      const leaf = document.createElement('div');
+      const leafType = Math.random() > 0.5 ? 'fa-leaf' : 'fa-pagelines';
+
+      leaf.innerHTML = `<i class="fa ${leafType}"></i>`;
+
+      // 随机树叶属性
+      const size = 10 + Math.floor(Math.random() * 10);
+      const opacity = 0.6 + Math.random() * 0.4;
+      const isAutumn = Math.random() > 0.3;
+      const randomX = Math.random() * 2 - 1; // -1 到 1 的水平偏移
+      const randomRot = 1 + Math.random() * 1.5; // 1 到 2.5 倍旋转
+      const fallDuration = 8 + Math.random() * 12; // 8-20秒
+
+      leaf.className = 'leaf';
+      leaf.style.color = isAutumn ? '#e97451' : '#2d6a4f';
+      leaf.style.fontSize = `${size}px`;
+      leaf.style.opacity = opacity;
+      leaf.style.setProperty('--random-x', randomX);
+      leaf.style.setProperty('--random-rot', randomRot);
+      leaf.style.setProperty('--fall-duration', `${fallDuration}s`);
+
+      // 随机起始位置
+      const startX = -5 + Math.random() * 105;
+      leaf.style.left = `${startX}%`;
+      leaf.style.top = '-20px';
+
+      container.appendChild(leaf);
+
+      // 动画结束后移除
+      setTimeout(() => {
+        if (leaf && leaf.parentNode) {
+          leaf.parentNode.removeChild(leaf);
+        }
+      }, fallDuration * 1000);
+    }
+
+    // 创建水滴
+    function createDroplet() {
+      const container = document.getElementById('droplets-container');
+      if (!container) return;
+
+      const droplet = document.createElement('div');
+      droplet.innerHTML = '<i class="fa fa-tint"></i>';
+      droplet.className = 'droplet';
+
+      // 随机水滴参数
+      const speed = 3 + Math.random() * 4; // 3-7秒的下落时间
+      const size = 8 + Math.random() * 6; // 大小
+      const opacity = 0.4 + Math.random() * 0.5; // 透明度
+      const dropX = Math.random() * 40 - 20; // -20 到 20 的水平偏移
+      const dropRot = Math.random() * 60 - 30; // -30 到 30 度的旋转
+
+      droplet.style.fontSize = `${size}px`;
+      droplet.style.opacity = opacity;
+      droplet.style.setProperty('--drop-x', dropX);
+      droplet.style.setProperty('--drop-rot', `${dropRot}deg`);
+      droplet.style.animation = `drop ${speed}s linear forwards`;
+
+      // 随机水平位置
+      const startX = Math.random() * 100;
+      droplet.style.left = `${startX}%`;
+      droplet.style.top = '-50px';
+
+      // 添加到容器
+      container.appendChild(droplet);
+
+      // 动画结束后移除
+      setTimeout(() => {
+        if (droplet && droplet.parentNode) {
+          droplet.parentNode.removeChild(droplet);
+        }
+      }, speed * 1000);
+    }
+
+    // 开始下雨
+    function startRain() {
+      // 初始生成一些水滴
+      for (let i = 0; i < 5; i++) {
+        setTimeout(createDroplet, i * 800);
+      }
+
+      // 持续生成水滴
+      setInterval(() => {
+        const randomDelay = Math.random() * 1500 + 500;
+        setTimeout(createDroplet, randomDelay);
+      }, 1000);
+    }
+
+    // 绑定所有事件
+    function bindEvents() {
+      // 第一阶段按钮事件
+      document.getElementById('stage1-yes').addEventListener('click', () => {
+        document.getElementById('stage1').classList.add('hidden');
+        document.getElementById('stage2').classList.remove('hidden');
+      });
+
+      document.getElementById('stage1-no').addEventListener('click', () => {
+        alert('随时可以回来探索这片神秘森林哦~');
+      });
+
+      // 第二阶段按钮事件
+      document.querySelectorAll('.stage2-yes').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.getElementById('stage2').classList.add('hidden');
+          document.getElementById('scroll-popup').classList.remove('hidden');
+        });
+      });
+
+      document.getElementById('stage2-no').addEventListener('click', () => {
+        document.getElementById('stage2').classList.add('hidden');
+        document.getElementById('stage1').classList.remove('hidden');
+      });
+
+      // 卷轴点击事件
+      document.getElementById('scroll-wrapper').addEventListener('click', function() {
+        this.classList.toggle('scroll-opened');
+
+        // 打开后3秒显示最终阶段
+        if (this.classList.contains('scroll-opened')) {
+          setTimeout(() => {
+            document.getElementById('scroll-popup').classList.add('hidden');
+            document.getElementById('final-stage').classList.remove('hidden');
+          }, 3000);
+        }
+      });
+
+      // 最终阶段按钮事件
+      document.querySelectorAll('.final-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.getElementById('final-stage').classList.add('hidden');
+          document.getElementById('redirect-message').classList.remove('hidden');
+        });
+      });
+
+      // 跳转按钮事件
+      document.getElementById('redirect-btn').addEventListener('click', () => {
+        alert('即将开始森林探险！');
+        // 实际应用中可以在这里添加页面跳转逻辑
+        document.getElementById('redirect-message').classList.add('hidden');
+        document.getElementById('stage1').classList.remove('hidden');
+      });
+
+      // 另一处风景按钮事件
+      document.getElementById('another-version').addEventListener('click', () => {
+        alert('即将前往另一处风景！');
+      });
+    }
+  </script>
+</body>
+
+</html>
