@@ -5,9 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>特别的心意</title>
-  <!-- 引入Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- 引入Font Awesome -->
   <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
   <script>
@@ -41,7 +39,6 @@
       }
     }
 
-    /* 核心动画定义 */
     @keyframes heartBeat {
       0%, 100% { transform: scale(1); }
       14% { transform: scale(1.1); }
@@ -67,7 +64,6 @@
       75% { transform: translate(-10px, 5px); }
     }
 
-    /* 流星特效增强 */
     @keyframes starPulse {
       0%, 100% {
         opacity: 1;
@@ -119,7 +115,6 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* 信封样式 */
     .envelope-scene {
       perspective: 1000px;
       width: 100%;
@@ -222,7 +217,6 @@
       padding: 0 15px;
     }
 
-    /* 另一版入口样式 */
     .another-version {
       position: fixed;
       bottom: 20px;
@@ -255,15 +249,12 @@
 </head>
 
 <body class="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-purple-900 flex items-center justify-center p-4 font-sans overflow-x-hidden relative">
-  <!-- 星星背景 -->
   <div id="stars-container" class="fixed inset-0 pointer-events-none z-0"></div>
 
-  <!-- 流星容器 -->
   <div id="meteors-container" class="fixed inset-0 pointer-events-none z-0"></div>
 
 
   <div class="max-w-4xl w-full mx-auto relative z-10">
-    <!-- 初始问题界面 - 默认显示 -->
     <div id="stage1" class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-8 text-center transition-all duration-500 transform border border-pink-100">
       <h1 class="text-[clamp(1.5rem,4vw,2.2rem)] font-bold text-gray-800 mb-6 text-shadow">有件很重要的事想告诉你...</h1>
       <p class="text-[clamp(1.1rem,3vw,1.5rem)] text-gray-700 mb-10">我喜欢你，你愿意做我的女朋友吗？</p>
@@ -278,7 +269,6 @@
       </div>
     </div>
 
-    <!-- 第二阶段：包围的按钮 - 默认隐藏 -->
     <div id="stage2" class="hidden bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-8 text-center border border-pink-100">
       <h2 class="text-xl font-bold text-gray-800 mb-6 text-shadow">再认真考虑一下嘛？</h2>
       <p class="text-gray-600 mb-8">我的心意是认真的~</p>
@@ -303,7 +293,6 @@
       </div>
     </div>
 
-    <!-- 最终阶段：多个愿意按钮 - 默认隐藏 -->
     <div id="final-stage" class="hidden flex flex-col items-center justify-center w-full h-full">
       <h2 class="text-2xl font-bold text-white mb-2 text-shadow">这一定是命中注定！</h2>
       <p class="text-gray-200 mb-4">选一个按钮，让我知道你的答案吧~</p>
@@ -326,7 +315,6 @@
       </div>
     </div>
 
-    <!-- 信封弹窗 - 默认隐藏 -->
     <div id="envelope-popup" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col items-center justify-center p-4">
       <h3 class="text-2xl font-bold text-white mb-8 text-shadow text-center px-4">我有一份特别的信要给你</h3>
       <div class="envelope-scene">
@@ -348,7 +336,6 @@
       </div>
     </div>
 
-    <!-- 跳转提示 - 默认隐藏 -->
     <div id="redirect-message" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center transform transition-all scale-100 shadow-2xl border border-pink-100">
         <div class="text-6xl text-love mb-4 heart-beat">
@@ -364,14 +351,12 @@
   </div>
 
   <script>
-    // 页面加载完成后初始化
     document.addEventListener('DOMContentLoaded', function() {
       createStars();
       startMeteorShower();
       bindEvents();
     });
 
-    // 创建星空背景（增强版）
     function createStars() {
       const container = document.getElementById('stars-container');
       const starCount = 200; // 增加星星数量
@@ -380,7 +365,6 @@
         const star = document.createElement('div');
         star.innerHTML = '<i class="fa fa-star"></i>';
 
-        // 随机星星属性
         const size = 2 + Math.floor(Math.random() * 10);
         const opacity = 0.3 + Math.random() * 0.7;
         const isBlue = Math.random() > 0.7;
@@ -404,7 +388,6 @@
       }
     }
 
-    // 创建流星（增强版）
     function createMeteor() {
       const container = document.getElementById('meteors-container');
       if (!container) return;
@@ -412,27 +395,23 @@
       const meteor = document.createElement('div');
       meteor.className = 'meteor';
 
-      // 随机流星参数
       const angle = 15 + Math.random() * 45; // 15-60度的飞行角度
       const speed = 1.5 + Math.random() * 2; // 更快的流星速度
       const trailLength = 100 + Math.random() * 300; // 更长的拖尾
       const starSize = 14 + Math.random() * 8; // 更大的流星头部
       const isPink = Math.random() > 0.7; // 增加粉色流星
 
-      // 创建拖尾
       const trail = document.createElement('div');
       trail.className = 'meteor-trail';
       trail.style.width = '2px';
       trail.style.height = `${trailLength}px`;
       trail.style.transform = `rotate(${angle}deg)`;
 
-      // 粉色流星特殊样式
       if (isPink) {
         trail.style.background = 'linear-gradient(to right, rgba(236, 72, 153, 0.8) 0%, rgba(249, 115, 22, 0.6) 20%, rgba(249, 115, 22, 0.4) 40%, rgba(249, 115, 22, 0.2) 60%, rgba(249, 115, 22, 0.1) 80%, rgba(249, 115, 22, 0) 100%)';
         trail.style.boxShadow = '0 0 12px 2px rgba(236, 72, 153, 0.3)';
       }
 
-      // 创建星星（流星头部）
       const star = document.createElement('div');
       star.className = 'meteor-star';
       star.innerHTML = '<i class="fa fa-star"></i>';
@@ -443,11 +422,9 @@
         star.style.color = '#ec4899';
       }
 
-      // 组合流星元素
       meteor.appendChild(trail);
       meteor.appendChild(star);
 
-      // 随机起始位置（可能从左、上或右上）
       const startPositions = [
         {x: -200 - Math.random() * 300, y: -100 + Math.random() * 200}, // 左上
         {x: window.innerWidth + 200, y: -100 + Math.random() * 200}, // 右上
@@ -457,21 +434,17 @@
       meteor.style.left = `${startPos.x}px`;
       meteor.style.top = `${startPos.y}px`;
 
-      // 计算飞行角度和距离
       const radians = angle * (Math.PI / 180);
       const distanceX = Math.cos(radians) * (window.innerWidth + 800);
       const distanceY = Math.sin(radians) * (window.innerHeight + 800);
 
-      // 应用动画
       meteor.style.transition = `transform ${speed}s cubic-bezier(0.2, 0.1, 0.3, 1) forwards`;
       setTimeout(() => {
         meteor.style.transform = `translate(${distanceX}px, ${distanceY}px)`;
       }, 10);
 
-      // 添加到容器
       container.appendChild(meteor);
 
-      // 动画结束后移除
       setTimeout(() => {
         if (meteor && meteor.parentNode) {
           meteor.parentNode.removeChild(meteor);
@@ -479,21 +452,17 @@
       }, speed * 1000);
     }
 
-    // 流星雨（增强版）
     function startMeteorShower() {
-      // 初始生成更多流星
       for (let i = 0; i < 5; i++) {
         setTimeout(createMeteor, i * 1000);
       }
 
-      // 更频繁地生成流星
       setInterval(() => {
         const randomDelay = Math.random() * 2000 + 500;
         setTimeout(createMeteor, randomDelay);
       }, 1500);
     }
 
-    // 绑定交互事件（保持原有逻辑）
     function bindEvents() {
       let stage1Attempts = 0;
       const MAX_STAGE1_ATTEMPTS = 5;
@@ -504,7 +473,6 @@
       const targetUrl = "start.html";
       const anotherVersionUrl = "baobao.html";
 
-      // 获取DOM元素
       const stage1 = document.getElementById('stage1');
       const stage2 = document.getElementById('stage2');
       const finalStage = document.getElementById('final-stage');
@@ -514,27 +482,21 @@
       const redirectBtn = document.getElementById('redirect-btn');
       const anotherVersion = document.getElementById('another-version');
 
-      // 显示信封弹窗
       function showEnvelope() {
-        // 隐藏所有阶段
         document.querySelectorAll('div[id^="stage"]').forEach(stage => {
           stage.classList.add('hidden');
         });
         envelopePopup.classList.remove('hidden');
       }
 
-      // 第一阶段：初始表白
       const stage1Yes = document.getElementById('stage1-yes');
       const stage1No = document.getElementById('stage1-no');
 
-      // 点击"愿意"直接显示信封
       stage1Yes.addEventListener('click', showEnvelope);
 
-      // "不愿意"按钮躲避逻辑
       stage1No.addEventListener('mouseover', () => {
         stage1Attempts++;
 
-        // 达到最大尝试次数，进入第二阶段
         if (stage1Attempts >= MAX_STAGE1_ATTEMPTS) {
           stage1.classList.add('opacity-0', 'scale-95');
           setTimeout(() => {
@@ -544,7 +506,6 @@
           return;
         }
 
-        // 计算随机位置让按钮"躲避"
         const container = stage1.getBoundingClientRect();
         const btnWidth = stage1No.offsetWidth;
         const btnHeight = stage1No.offsetHeight;
@@ -552,7 +513,6 @@
         const maxX = container.width - btnWidth - 20;
         const maxY = container.height - btnHeight - 20;
 
-        // 确保按钮不会超出容器范围
         const randomX = Math.floor(Math.random() * maxX);
         const randomY = Math.floor(Math.random() * maxY);
 
@@ -561,12 +521,10 @@
         stage1No.style.top = `${randomY}px`;
       });
 
-      // 第二阶段：周围都是同意按钮
       document.querySelectorAll('.stage2-yes').forEach(btn => {
         btn.addEventListener('click', showEnvelope);
       });
 
-      // 第二阶段的"不愿意"按钮
       const stage2No = document.getElementById('stage2-no');
       stage2No.addEventListener('mouseover', () => {
         stage2Attempts++;
@@ -576,13 +534,11 @@
           setTimeout(() => {
             stage2.classList.add('hidden');
             finalStage.classList.remove('hidden');
-            // 显示另一版入口
             anotherVersion.classList.add('visible');
           }, 300);
           return;
         }
 
-        // 让按钮在更大范围内移动
         const container = stage2.querySelector('.relative');
         const rect = container.getBoundingClientRect();
         const btnWidth = stage2No.offsetWidth;
@@ -597,16 +553,13 @@
         stage2No.style.transform = `translate(${randomX}px, ${randomY}px)`;
       });
 
-      // 最终阶段所有按钮都显示信封
       document.querySelectorAll('.final-btn').forEach(btn => {
         btn.addEventListener('click', showEnvelope);
       });
 
-      // 信封点击事件
       envelopeWrapper.addEventListener('click', function() {
         this.classList.toggle('envelope-opened');
 
-        // 打开后延迟显示跳转提示
         if (this.classList.contains('envelope-opened')) {
           setTimeout(() => {
             envelopePopup.classList.add('hidden');
@@ -615,12 +568,10 @@
         }
       });
 
-      // 跳转按钮
       redirectBtn.addEventListener('click', function() {
         window.location.href = targetUrl;
       });
-
-      // 另一版入口
+      
       anotherVersion.addEventListener('click', function() {
         window.location.href = anotherVersionUrl;
       });

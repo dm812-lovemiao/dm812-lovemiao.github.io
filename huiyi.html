@@ -6,7 +6,6 @@
     <title>我们的回忆 - 游戏、旅行与日常</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* 保持原有样式不变 */
         * {
             margin: 0;
             padding: 0;
@@ -83,7 +82,6 @@
             color: #5c3a6d;
         }
 
-        /* 返回主页按钮样式 */
         .back-button {
             position: absolute;
             top: 20px;
@@ -145,7 +143,6 @@
             font-size: 1.2rem;
         }
 
-        /* 回忆内容区域 */
         .memories-content {
             background: rgba(255, 255, 255, 0.6);
             border-radius: 20px;
@@ -192,7 +189,6 @@
             line-height: 1.6;
         }
 
-        /* 时间线样式 */
         .timeline {
             position: relative;
             max-width: 800px;
@@ -304,7 +300,6 @@
             opacity: 1;
         }
 
-        /* 弹窗样式保持不变 */
         .memory-modal {
             position: fixed;
             top: 0;
@@ -596,7 +591,6 @@
             <p class="subtitle">记录我们一起走过的游戏世界、旅行足迹和日常生活的点点滴滴</p>
         </header>
 
-        <!-- 回忆分类标签 -->
         <div class="memories-tabs">
             <button class="memory-tab-btn active" data-tab="games">
                 <i class="fas fa-gamepad"></i> 游戏时光
@@ -609,9 +603,7 @@
             </button>
         </div>
 
-        <!-- 回忆内容区域 -->
         <div class="memories-content">
-            <!-- 游戏时光 - 时间线格式 -->
             <div class="memory-section active" id="games-section">
                 <div class="section-header">
                     <h2 class="section-title">
@@ -669,7 +661,6 @@
                 </div>
             </div>
 
-            <!-- 旅行日记和日常生活区域保持不变 -->
             <div class="memory-section" id="travel-section">
                 <div class="section-header">
                     <h2 class="section-title">
@@ -693,7 +684,6 @@
             </div>
         </div>
 
-        <!-- 弹窗组件保持不变 -->
         <div class="memory-modal" id="memoryModal">
             <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
             <div class="modal-container">
@@ -729,15 +719,12 @@
     </div>
 
     <script>
-        // 添加调试日志函数，方便查看事件是否触发
         function log(message) {
             console.log("[回忆页面] " + message);
         }
 
-        // 页面加载完成后立即执行
         log("页面开始加载...");
 
-        // 1. 创建飘落的心形背景
         function createHearts() {
             log("创建心形背景");
             const heartsContainer = document.getElementById('hearts');
@@ -758,7 +745,6 @@
             }
         }
 
-        // 2. 确保返回主页按钮事件能被触发
         function initBackToHome() {
             log("初始化返回主页按钮");
 
@@ -798,7 +784,6 @@
             log("返回主页按钮事件绑定完成");
         }
 
-        // 3. 初始化其他功能
         function initMemoryTabs() {
             log("初始化回忆分类标签");
             // 原有代码保持不变...
@@ -839,7 +824,6 @@
 
         function initModals() {
             log("初始化弹窗功能");
-            // 原有代码保持不变...
             const memoriesData = {
                 game1: {
                     image: 'game4.jpg',
@@ -920,7 +904,6 @@
             log("所有功能初始化完成");
         }
 
-        // 额外的全局函数，可在控制台手动调用测试
         window.goToHome = function() {
             const homeUrl = "index.html";
             log("手动调用返回主页功能");
